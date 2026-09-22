@@ -10,9 +10,24 @@
 //=======================================
 //  I/O Con pantalla y botones
 //=======================================
-bool BtnActpre; //Valor booleano que indica si el boton esta presionado o no
+bool Jamon = true;
 int pepe = -1; //numero de la hotbar
-bool BtnACT = !BtnActpre; //la inversa usando !, esta mas rico que "jamon()"
+
+//=======================================
+//  Bools para el io
+//=======================================
+bool BtnACT() //Valor booleano que indica si el boton esta presionado o no
+{
+  if (digitalRead(12) == HIGH){ //si me tocan xdd
+  if (Jamon)    {
+      Jamon = false;
+      return true;
+    }
+      return false;
+  }
+  Jamon = true;
+  return false;
+}
 //=======================================
 //  Variables de juego
 //=======================================
@@ -37,7 +52,6 @@ void setup() {
 }
 
 void loop() {
-  BtnACT = digitalRead(12); 
   if (Serial.available() > 0)  {
     pepe = Serial.read();
     Serial.println(String("IUNO:") + pepe);
@@ -45,7 +59,7 @@ void loop() {
   if (accionesDisp != 0) {
 
     //Espada
-    if (DiplaSelct(1) && BtnACT)    {
+    if (DiplaSelct(1) && BtnACT())    {
       vidaDelMalditoYHorribleWarden -= 25;
       accionesDisp--;
       
@@ -53,7 +67,7 @@ void loop() {
     }
 
     //Arco
-    if (DiplaSelct(2) && BtnACT)    {
+    if (DiplaSelct(2) && BtnACT())    {
       vidaDelMalditoYHorribleWarden -= QuickEventJuanitoTech()? 50 : 0;
       accionesDisp--;
       Serial.println(String("W") + vidaDelMalditoYHorribleWarden);
@@ -61,15 +75,14 @@ void loop() {
     }
 
     //Bife
-    if (DiplaSelct(3) && BtnACT)    {
+    if (DiplaSelct(3) && BtnACT())    {
       Sucri += 3;
       accionesDisp--;
       Serial.println(String("V") + Sucri);
     }
 
     //Lana
-    if (DiplaSelct(4) && BtnACT)
-    {
+    if (DiplaSelct(4) && BtnACT())    {
       if (cantidadDeLanas > 0) {
       accionesDisp = 2;
       cantidadDeLanas--;
@@ -96,14 +109,17 @@ bool QuickEventJuanitoTech()
 {
   delay(1000);
   unsigned long ttts = millis();
+  // Gran Chisitos es un numerorandom, que representa el tiempo en milisegundos que tiene el jugador para presionar el boton
   float granChisitos = random(150, 250);
   int jaimito = -1;
   //ereal = "";
   while (jaimito == -1){
+    // te ODIO, copilot
+    // hola chicos, manuelito2 es el tiempo en milisegundos que ha pasado desde que empezo el evento
   unsigned long manuelito2 = millis() - ttts;
   manuelito2 = map(manuelito2, 0, 1000, 0, 400) / 4;
   Serial.println(String(manuelito2) + "<->" + String(granChisitos));
-  if (BtnACT)
+  if (BtnACT())
   {
     if (manuelito2 > granChisitos - 25 && manuelito2 < granChisitos + 25)
     {
