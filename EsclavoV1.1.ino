@@ -26,7 +26,7 @@ int vidaDelMalditoYHorribleWarden = 200;
 int Sucri = 20; //es la vida por si revisan este codigo, gord@s
 
 bool DiplaSelct(int e) {//<-- vro es sans ahora
-  return pepe == e + 1? true : false;
+  return ASSApepe == e + 1;
 }
 
 

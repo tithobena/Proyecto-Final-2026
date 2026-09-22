@@ -6,6 +6,13 @@
                 "${workspaceFolder}/**",
                 "/home/tithobena/.arduino15/packages/arduino/hardware/avr/1.8.8/cores/arduino",
                 "/home/tithobena/.arduino15/packages/arduino/hardware/avr/1.8.8/variants/standard",
+                "/home/tithobena/Arduino/libraries/Adafruit_GFX_Library",
+                "/home/tithobena/Arduino/libraries/Adafruit_BusIO",
+                "/home/tithobena/.arduino15/packages/arduino/hardware/avr/1.8.8/libraries/Wire/src",
+                "/home/tithobena/.arduino15/packages/arduino/hardware/avr/1.8.8/libraries/SPI/src",
+                "/home/tithobena/Arduino/libraries/MCUFRIEND_kbv",
+                "/home/tithobena/Arduino/libraries/Adafruit_TouchScreen",
+                "/home/tithobena/Arduino/libraries/MCUFRIEND_kbv/utility",
                 "/home/tithobena/.arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/avr/include"
             ],
             "forcedInclude": [
