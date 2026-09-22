@@ -33,3 +33,14 @@ El circuito está diseñado con componentes de Taller de Tecnologías de Base pa
 * 1x Buzzer
 * LEDs (Azules y Rojos)
 * Tiras LED de 12V
+
+
+# Como funciona el A.NANO
+Recibe señal del boton y El A.UNO.
+lo procesa xd
+le manda los datos
+## COMO MANDA
+* V + (vida)
+* A + (numero de acciones)
+* Cl + (cantidad de lanas) / Cln (si no hay lanas)
+* 

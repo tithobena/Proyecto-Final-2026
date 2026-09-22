@@ -40,7 +40,7 @@ void loop() {
   BtnACT = digitalRead(12); 
   if (Serial.available() > 0)  {
     pepe = Serial.read();
-    Serial.println(String("granpepe") + pepe);
+    Serial.println(String("IUNO:") + pepe);
   }
   if (accionesDisp != 0) {
 
@@ -56,7 +56,7 @@ void loop() {
     if (DiplaSelct(2) && BtnACT)    {
       vidaDelMalditoYHorribleWarden -= QuickEventJuanitoTech()? 50 : 0;
       accionesDisp--;
-      Serial.println("W" + vidaDelMalditoYHorribleWarden);
+      Serial.println(String("W") + vidaDelMalditoYHorribleWarden);
       //use la misma mrd xd
     }
 
@@ -64,7 +64,7 @@ void loop() {
     if (DiplaSelct(3) && BtnACT)    {
       Sucri += 3;
       accionesDisp--;
-      Serial.println(String("Vida:") + Sucri);
+      Serial.println(String("V") + Sucri);
     }
 
     //Lana
@@ -73,9 +73,10 @@ void loop() {
       if (cantidadDeLanas > 0) {
       accionesDisp = 2;
       cantidadDeLanas--;
-      Serial.println("AC:" + String(accionesDisp));
+      Serial.println("Cl" + String(cantidadDeLanas));
+      Serial.println("A" + String(accionesDisp));
       }else {
-        Serial.println("nlana");
+        Serial.println("Cln");
       }
     }
 }else {
@@ -83,7 +84,7 @@ void loop() {
     {
     empiezalobueno = false;
     Sucri -= QuickEventJuanitoTech()? 0 : 6; //re tryhard xddddd
-    Serial.println(String("Vida: ") + Sucri);
+    Serial.println(String("V") + Sucri);
     accionesDisp = 1;
     empiezalobueno = true;
     }
