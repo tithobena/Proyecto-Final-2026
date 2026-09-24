@@ -43,4 +43,5 @@ le manda los datos
 * V + (vida)
 * A + (numero de acciones)
 * Cl + (cantidad de lanas) / Cln (si no hay lanas)
-* 
+* V0 (temoriste)
+* ganastebro (bue si)

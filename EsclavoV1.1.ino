@@ -52,44 +52,26 @@ void setup() {
 }
 
 void loop() {
+
+  //se fija si hay serial (cereal cremoso con yougr la serenisima)
   if (Serial.available() > 0)  {
     pepe = Serial.read();
     Serial.println(String("IUNO:") + pepe);
   }
-  if (accionesDisp != 0) {
-
-    //Espada
-    if (DiplaSelct(1) && BtnACT())    {
-      vidaDelMalditoYHorribleWarden -= 25;
-      accionesDisp--;
-      
-      Serial.println(String("W") + vidaDelMalditoYHorribleWarden);
-    }
-
-    //Arco
-    if (DiplaSelct(2) && BtnACT())    {
-      vidaDelMalditoYHorribleWarden -= QuickEventJuanitoTech()? 50 : 0;
-      accionesDisp--;
-      Serial.println(String("W") + vidaDelMalditoYHorribleWarden);
-      //use la misma mrd xd
-    }
-
-    //Bife
-    if (DiplaSelct(3) && BtnACT())    {
-      Sucri += 3;
-      accionesDisp--;
-      Serial.println(String("V") + Sucri);
-    }
-
-    //Lana
-    if (DiplaSelct(4) && BtnACT())    {
-      if (cantidadDeLanas > 0) {
-      accionesDisp = 2;
-      cantidadDeLanas--;
-      Serial.println("Cl" + String(cantidadDeLanas));
-      Serial.println("A" + String(accionesDisp));
-      }else {
-        Serial.println("Cln");
+  //modo rico (empeza el juego)
+  if (accionesDisp != 0) {  //si es 0 termina tu turno
+    
+    if (sucri <= 0) { //si te moris
+      //temoristexddxd
+      Serial.println("V0")
+      }
+    else {
+      //no te moris xdxdxxd
+      if (vidaDelMalditoYHorribleWarden > 0) {
+        juegito();
+      }
+      else {
+        Serial.println("ganastebro")
       }
     }
 }else {
@@ -135,4 +117,40 @@ bool QuickEventJuanitoTech()
   }
   }
   return jaimito == 1? true : false;
+}
+void juegito {
+  //Espada
+    if (DiplaSelct(1) && BtnACT())    {
+      vidaDelMalditoYHorribleWarden -= 25;
+      accionesDisp--;
+      
+      Serial.println(String("W") + vidaDelMalditoYHorribleWarden);
+    }
+
+    //Arco
+    if (DiplaSelct(2) && BtnACT())    {
+      vidaDelMalditoYHorribleWarden -= QuickEventJuanitoTech()? 50 : 0;
+      accionesDisp--;
+      Serial.println(String("W") + vidaDelMalditoYHorribleWarden);
+      //use la misma mrd xd
+    }
+
+    //Bife
+    if (DiplaSelct(3) && BtnACT())    {
+      Sucri += 3;
+      accionesDisp--;
+      Serial.println(String("V") + Sucri);
+    }
+
+    //Lana
+    if (DiplaSelct(4) && BtnACT())    {
+      if (cantidadDeLanas > 0) {
+      accionesDisp = 2;
+      cantidadDeLanas--;
+      Serial.println("Cl" + String(cantidadDeLanas));
+      Serial.println("A" + String(accionesDisp));
+      }else {
+        Serial.println("Cln");
+      }
+    }
 }
