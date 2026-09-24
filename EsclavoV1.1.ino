@@ -1,4 +1,7 @@
 #include <Arduino.h>
+#include <Ultrasonic.h>
+Ultrasonic gustavo(9, 10);
+
 /*
  ██████╗ ██████╗ ██╗   ██╗██████╗  ██████╗      ██████╗ ███████╗    ██████╗ ██╗ ██████╗ ██╗██╗  ██╗
 ██╔════╝ ██╔══██╗██║   ██║██╔══██╗██╔═══██╗    ██╔═████╗╚════██║    ██╔══██╗██║██╔═══██╗██║╚██╗██╔╝
@@ -16,6 +19,16 @@ int pepe = -1; //numero de la hotbar
 //=======================================
 //  Bools para el io
 //=======================================
+bool juegoIncia;
+bool ULTRASonicJbCOMPANY()
+{
+  float chomber = gustavo.read();
+  if (chomber > 7)
+    return true;
+  if (juegoIncia)
+    return true;
+  return false;
+}
 bool BtnACT() //Valor booleano que indica si el boton esta presionado o no
 {
   if (digitalRead(12) == HIGH){ //si me tocan xdd
@@ -43,16 +56,14 @@ int Sucri = 20; //es la vida por si revisan este codigo, gord@s
 bool DiplaSelct(int e) {//<-- vro es sans ahora
   return pepe == e + 1;
 }
-
-
-
 void setup() {
   Serial.begin(9600);
   pinMode(12, INPUT);
 }
 
 void loop() {
-
+  juegoIncia = ULTRASonicJbCOMPANY();
+  while(){
   //se fija si hay serial (cereal cremoso con yougr la serenisima)
   if (Serial.available() > 0)  {
     pepe = Serial.read();
@@ -64,6 +75,7 @@ void loop() {
     if (sucri <= 0) { //si te moris
       //temoristexddxd
       Serial.println("V0")
+      juegoIncia = false;
       }
     else {
       //no te moris xdxdxxd
@@ -72,6 +84,7 @@ void loop() {
       }
       else {
         Serial.println("ganastebro")
+        juegoIncia = false;
       }
     }
 }else {
@@ -118,6 +131,9 @@ bool QuickEventJuanitoTech()
   }
   return jaimito == 1? true : false;
 }
+
+
+
 void juegito {
   //Espada
     if (DiplaSelct(1) && BtnACT())    {
