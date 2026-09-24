@@ -45,3 +45,5 @@ le manda los datos
 * Cl + (cantidad de lanas) / Cln (si no hay lanas)
 * V0 (temoriste)
 * ganastebro (bue si)
+
+https://www.tinkercad.com/things/emPoVc5K16y-grand-elzing/edit?returnTo=https%3A%2F%2Fwww.tinkercad.com%2Fdashboard
