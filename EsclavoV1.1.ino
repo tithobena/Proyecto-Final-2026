@@ -131,7 +131,7 @@ void setup() {
 
 void loop() {
   juegoIncia = ULTRASonicJbCOMPANY();
-  while(juegoIncia || ){
+  while(juegoIncia){
   //se fija si hay serial (cereal cremoso con yougr la serenisima)
   if (Serial.available() > 0)  {
     pepe = Serial.read();
