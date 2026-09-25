@@ -27,6 +27,37 @@ int pepe = -1; //numero de la hotbar
 //  Bools para el io
 //=======================================
 bool juegoIncia;
+bool QuickEventJuanitoTech()
+{
+  delay(1000);
+  unsigned long ttts = millis();
+  // Gran Chisitos es un numerorandom, que representa el tiempo en milisegundos que tiene el jugador para presionar el boton
+  float granChisitos = random(150, 250);
+  int jaimito = -1;
+  //ereal = "";
+  while (jaimito == -1){
+    // te ODIO, copilot
+    // hola chicos, manuelito2 es el tiempo en milisegundos que ha pasado desde que empezo el evento
+  unsigned long manuelito2 = millis() - ttts;
+  manuelito2 = map(manuelito2, 0, 1000, 0, 400) / 4;
+  Serial.println(String(manuelito2) + "<->" + String(granChisitos));
+  if (BtnACT())
+  {
+    if (manuelito2 > granChisitos - 25 && manuelito2 < granChisitos + 25)
+    {
+      jaimito = 1; 
+    }else{
+      jaimito = 0;
+    }
+    //Cereal = "";
+  }
+  if (manuelito2 > 312)
+  {
+    jaimito = 0;
+  }
+  }
+  return jaimito == 1? true : false;
+}
 bool ULTRASonicJbCOMPANY()
 {
   float chomber = gustavo.read();
@@ -137,34 +168,3 @@ void loop() {
 
 }
 
-bool QuickEventJuanitoTech()
-{
-  delay(1000);
-  unsigned long ttts = millis();
-  // Gran Chisitos es un numerorandom, que representa el tiempo en milisegundos que tiene el jugador para presionar el boton
-  float granChisitos = random(150, 250);
-  int jaimito = -1;
-  //ereal = "";
-  while (jaimito == -1){
-    // te ODIO, copilot
-    // hola chicos, manuelito2 es el tiempo en milisegundos que ha pasado desde que empezo el evento
-  unsigned long manuelito2 = millis() - ttts;
-  manuelito2 = map(manuelito2, 0, 1000, 0, 400) / 4;
-  Serial.println(String(manuelito2) + "<->" + String(granChisitos));
-  if (BtnACT())
-  {
-    if (manuelito2 > granChisitos - 25 && manuelito2 < granChisitos + 25)
-    {
-      jaimito = 1; 
-    }else{
-      jaimito = 0;
-    }
-    //Cereal = "";
-  }
-  if (manuelito2 > 312)
-  {
-    jaimito = 0;
-  }
-  }
-  return jaimito == 1? true : false;
-}
