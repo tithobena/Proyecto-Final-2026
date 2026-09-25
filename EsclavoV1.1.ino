@@ -10,6 +10,13 @@ Ultrasonic gustavo(9, 10);
 ╚██████╔╝██║  ██║╚██████╔╝██║     ╚██████╔╝    ╚██████╔╝   ██║      ██║     ██║╚██████╔╝██║██╔╝ ██╗
  ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚═╝      ╚═════╝      ╚═════╝    ╚═╝      ╚═╝     ╚═╝ ╚═════╝ ╚═╝╚═╝  ╚═╝                                                    
                                                                  Codigo Esclavo V1.1 Para A.NANO*/
+
+//=======================================
+//  Variables de vida y recursos
+//=======================================
+int cantidadDeLanas = 3;
+int vidaDelMalditoYHorribleWarden = 200;
+int Sucri = 20; //es la vida por si revisan este codigo, gord@s
 //=======================================
 //  I/O Con pantalla y botones
 //=======================================
@@ -46,12 +53,42 @@ bool BtnACT() //Valor booleano que indica si el boton esta presionado o no
 //=======================================
 int accionesDisp = 1; //Cantidad de acciones disponibles (o turnos) por ronda
 bool empiezalobueno = true; //
-//=======================================
-//  Variables de vida y recursos
-//=======================================
-int cantidadDeLanas = 3;
-int vidaDelMalditoYHorribleWarden = 200;
-int Sucri = 20; //es la vida por si revisan este codigo, gord@s
+void juegito() {
+  //Espada
+    if (DiplaSelct(1) && BtnACT())    {
+      vidaDelMalditoYHorribleWarden -= 25;
+      accionesDisp--;
+      
+      Serial.println(String("W") + vidaDelMalditoYHorribleWarden);
+    }
+
+    //Arco
+    if (DiplaSelct(2) && BtnACT())    {
+      vidaDelMalditoYHorribleWarden -= QuickEventJuanitoTech()? 50 : 0;
+      accionesDisp--;
+      Serial.println(String("W") + vidaDelMalditoYHorribleWarden);
+      //use la misma mrd xd
+    }
+
+    //Bife
+    if (DiplaSelct(3) && BtnACT())    {
+      Sucri += 3;
+      accionesDisp--;
+      Serial.println(String("V") + Sucri);
+    }
+
+    //Lana
+    if (DiplaSelct(4) && BtnACT())    {
+      if (cantidadDeLanas > 0) {
+      accionesDisp = 2;
+      cantidadDeLanas--;
+      Serial.println("Cl" + String(cantidadDeLanas));
+      Serial.println("A" + String(accionesDisp));
+      }else {
+        Serial.println("Cln");
+      }
+    }
+}
 
 bool DiplaSelct(int e) {//<-- vro es sans ahora
   return pepe == e + 1;
@@ -63,7 +100,7 @@ void setup() {
 
 void loop() {
   juegoIncia = ULTRASonicJbCOMPANY();
-  while(){
+  while(juegoIncia){
   //se fija si hay serial (cereal cremoso con yougr la serenisima)
   if (Serial.available() > 0)  {
     pepe = Serial.read();
@@ -72,9 +109,9 @@ void loop() {
   //modo rico (empeza el juego)
   if (accionesDisp != 0) {  //si es 0 termina tu turno
     
-    if (sucri <= 0) { //si te moris
+    if (Sucri <= 0) { //si te moris
       //temoristexddxd
-      Serial.println("V0")
+      Serial.println("V0");
       juegoIncia = false;
       }
     else {
@@ -83,7 +120,7 @@ void loop() {
         juegito();
       }
       else {
-        Serial.println("ganastebro")
+        Serial.println("ganastebro");
         juegoIncia = false;
       }
     }
@@ -130,43 +167,4 @@ bool QuickEventJuanitoTech()
   }
   }
   return jaimito == 1? true : false;
-}
-
-
-
-void juegito {
-  //Espada
-    if (DiplaSelct(1) && BtnACT())    {
-      vidaDelMalditoYHorribleWarden -= 25;
-      accionesDisp--;
-      
-      Serial.println(String("W") + vidaDelMalditoYHorribleWarden);
-    }
-
-    //Arco
-    if (DiplaSelct(2) && BtnACT())    {
-      vidaDelMalditoYHorribleWarden -= QuickEventJuanitoTech()? 50 : 0;
-      accionesDisp--;
-      Serial.println(String("W") + vidaDelMalditoYHorribleWarden);
-      //use la misma mrd xd
-    }
-
-    //Bife
-    if (DiplaSelct(3) && BtnACT())    {
-      Sucri += 3;
-      accionesDisp--;
-      Serial.println(String("V") + Sucri);
-    }
-
-    //Lana
-    if (DiplaSelct(4) && BtnACT())    {
-      if (cantidadDeLanas > 0) {
-      accionesDisp = 2;
-      cantidadDeLanas--;
-      Serial.println("Cl" + String(cantidadDeLanas));
-      Serial.println("A" + String(accionesDisp));
-      }else {
-        Serial.println("Cln");
-      }
-    }
 }
