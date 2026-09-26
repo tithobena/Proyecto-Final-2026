@@ -1,3 +1,9 @@
+// chiquilines usen VS Arduino, C/C++, C dev kit como tengo yo
+// instalen AVR boards para que aparezca el arduino 
+// para compilar este codigo, y no se olviden de poner la placa Arduino Nano
+// para librerias de arduino usen Ultrasonic de Erick Simões, Adafruit GFX Library,
+// LCDtouch, Adafruit ILI9341, servo de michael margolis y MCUFRIEND_kbv.
+
 #include <Arduino.h>
 #include <Ultrasonic.h>
 Ultrasonic gustavo(9, 10);
