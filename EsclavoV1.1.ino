@@ -10,7 +10,11 @@ Ultrasonic gustavo(9, 10);
 ╚██████╔╝██║  ██║╚██████╔╝██║     ╚██████╔╝    ╚██████╔╝   ██║      ██║     ██║╚██████╔╝██║██╔╝ ██╗
  ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚═╝      ╚═════╝      ╚═════╝    ╚═╝      ╚═╝     ╚═╝ ╚═════╝ ╚═╝╚═╝  ╚═╝                                                    
                                                                  Codigo Esclavo V1.1 Para A.NANO*/
-
+//=======================================
+//  Variables de juego
+//=======================================
+int accionesDisp = 1; //Cantidad de acciones disponibles (o turnos) por ronda
+bool empiezalobueno = true; //
 //=======================================
 //  Variables de vida y recursos
 //=======================================
@@ -27,6 +31,16 @@ int pepe = -1; //numero de la hotbar
 //  Bools para el io
 //=======================================
 bool juegoIncia;
+bool DiplaSelct(int e) {//<-- vro es sans ahora
+  pepe += 1;
+  bool resultadoJuanitoTech = pepe == e;
+  pepe -= 1;
+  return resultadoJuanitoTech;
+}
+void setup() {
+  Serial.begin(9600);
+  pinMode(12, INPUT);
+}
 bool QuickEventJuanitoTech()
 {
   delay(1000);
@@ -43,7 +57,7 @@ bool QuickEventJuanitoTech()
   Serial.println(String(manuelito2) + "<->" + String(granChisitos));
   if (BtnACT())
   {
-    if (manuelito2 > granChisitos - 25 && manuelito2 < granChisitos + 25)
+    if (manuelito2 >= granChisitos - 25 && manuelito2 <= granChisitos + 25)
     {
       jaimito = 1; 
     }else{
@@ -56,7 +70,7 @@ bool QuickEventJuanitoTech()
     jaimito = 0;
   }
   }
-  return jaimito == 1? true : false;
+  return jaimito == 1;
 }
 bool ULTRASonicJbCOMPANY()
 {
@@ -79,18 +93,13 @@ bool BtnACT() //Valor booleano que indica si el boton esta presionado o no
   Jamon = true;
   return false;
 }
-//=======================================
-//  Variables de juego
-//=======================================
-int accionesDisp = 1; //Cantidad de acciones disponibles (o turnos) por ronda
-bool empiezalobueno = true; //
 void juegito() {
   //Espada
     if (DiplaSelct(1) && BtnACT())    {
       vidaDelMalditoYHorribleWarden -= 25;
       accionesDisp--;
-      
       Serial.println(String("W") + vidaDelMalditoYHorribleWarden);
+      delay(50);
     }
 
     //Arco
@@ -98,6 +107,7 @@ void juegito() {
       vidaDelMalditoYHorribleWarden -= QuickEventJuanitoTech()? 50 : 0;
       accionesDisp--;
       Serial.println(String("W") + vidaDelMalditoYHorribleWarden);
+      delay(50);
       //use la misma mrd xd
     }
 
@@ -106,6 +116,9 @@ void juegito() {
       Sucri += 3;
       accionesDisp--;
       Serial.println(String("V") + Sucri);
+      vidaDelMalditoYHorribleWarden -= 10;
+      Serial.println("W" + vidaDelMalditoYHorribleWarden);
+      delay(50);
     }
 
     //Lana
@@ -118,15 +131,8 @@ void juegito() {
       }else {
         Serial.println("Cln");
       }
+      delay(50);
     }
-}
-
-bool DiplaSelct(int e) {//<-- vro es sans ahora
-  return pepe == e + 1;
-}
-void setup() {
-  Serial.begin(9600);
-  pinMode(12, INPUT);
 }
 
 void loop() {
@@ -159,6 +165,7 @@ void loop() {
     if (empiezalobueno)
     {
     empiezalobueno = false;
+    delay(500);
     Sucri -= QuickEventJuanitoTech()? 0 : 6; //re tryhard xddddd
     Serial.println(String("V") + Sucri);
     accionesDisp = 1;
