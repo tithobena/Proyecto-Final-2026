@@ -55,7 +55,7 @@ bool QuickEventJuanitoTech()
   unsigned long manuelito2 = millis() - ttts;
   manuelito2 = map(manuelito2, 0, 1000, 0, 400) / 4;
   //Serial.println(String(manuelito2) + "<->" + String(granChisitos)); esto a quedado en el pasado viejo
-  Serial.println("Ch" + granChisitos)
+  Serial.println("Ch" + String(granChisitos));
   if (BtnACT())
   {
     if (manuelito2 >= granChisitos - 25 && manuelito2 <= granChisitos + 25)
