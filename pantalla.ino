@@ -1,3 +1,4 @@
+#include <Arduino.h>
 /*
  ██████╗ ██████╗ ██╗   ██╗██████╗  ██████╗      ██████╗ ███████╗    ██████╗ ██╗ ██████╗ ██╗██╗  ██╗
 ██╔════╝ ██╔══██╗██║   ██║██╔══██╗██╔═══██╗    ██╔═████╗╚════██║    ██╔══██╗██║██╔═══██╗██║╚██╗██╔╝
@@ -6,8 +7,54 @@
 ╚██████╔╝██║  ██║╚██████╔╝██║     ╚██████╔╝    ╚██████╔╝   ██║      ██║     ██║╚██████╔╝██║██╔╝ ██╗
  ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚═╝      ╚═════╝      ╚═════╝    ╚═╝      ╚═╝     ╚═╝ ╚═════╝ ╚═╝╚═╝  ╚═╝                                                    
                                                                  Codigo Pantalla V1.1 Para A.UNO*/
+//funciones mu importantes por eso estan hasta arribita, chisitos vos ponele nombre
+
+int BonosbrutalmenteDevorados[10] = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+
+void MandarBonoEnString(int bono, int valor = 0) 
+{                                                                   
+  byte paquete[3];
+  paquete[0] = (byte)bono;
+  paquete[1] = highByte(valor);
+  paquete[2] = lowByte(valor);
+  Serial.write(paquete, 3);
+}
+
+int BonoRecibido(int bonoesperado)
+{
+  if (BonosbrutalmenteDevorados[bonoesperado] != -1) {
+    int valorGuardado = BonosbrutalmenteDevorados[bonoesperado];
+    BonosbrutalmenteDevorados[bonoesperado] = -1;
+    return valorGuardado;
+  }
+
+  while (Serial.available() >= 3) {
+    byte bonoLeido = Serial.read();
+    byte alto = Serial.read();
+    byte bajo = Serial.read();
+    int valorLeido = word(alto, bajo); 
+
+    if (bonoLeido == bonoesperado) {
+      return valorLeido;
+    } else if (bonoLeido >= 1 && bonoLeido <= 9) {
+      BonosbrutalmenteDevorados[bonoLeido] = valorLeido; 
+    }
+  }
+  
+  return -1;
+}
+
+//=======================================
+//              Bonos
+//=======================================
+int Warden = 1;
+int Vida = 2;
+int ChisitosIn = 3;           
+int Manuelito = 5;
+int ADisp = 6;
+int LanaDisp = 7;
+int Hotbar = 8;
                   
-#include <Arduino.h>
 #include <Adafruit_GFX.h>
 #include <MCUFRIEND_kbv.h>
 #include <TouchScreen.h>
@@ -26,7 +73,7 @@ TouchScreen tactil = TouchScreen(XP, YP, XM, YM, 300);
 #define COLOR_BORDE       0xAD75 
 #define COLOR_SOMBRA      0x2104 
 #define COLOR_SELECCION   0xFFFF 
-
+#define Negroperu  0x10A2
 
 
 //Variables para organizar las casillas (la barra de abajo)
@@ -49,10 +96,25 @@ const int Pyi = 320 - tamanoCasilla - 20; //lo mismo xd
 //Esta variable guarda que casilla esta seleccionada actualmente
 int casillaActual = 0; 
 
+
+
+void dibujarQuickEventJuanitoTech(String info, int altura)
+{   //<--- muy humano
+  const int anchodelcuadraditocroto = 400;
+  const int altodelomismo = 50;
+  if (info.indexOf("Ch") != -1)
+  {
+    info.remove(0, 2);
+    TSPoint inicio = TSPoint(480 - anchodelcuadraditocroto, altura + altodelomismo, 0); //no habia Vector 2 asi que tuve que poner esto
+    pantalla.fillRect(inicio.x, inicio.y, anchodelcuadraditocroto, altodelomismo, Negroperu);
+  }
+}
+
+
+
 void setup() {
   //Iniciamos la comunicacion con el otro Arduino a 9600 de velocidad (como si fuera a la pc, pero en cambio al otro arduino)
   Serial.begin(9600); 
-  
   //Configuramos y encendemos la pantalla (primero se fija si es la pantalla correcta y despues arranca para que no )
   uint16_t ID = pantalla.readID();
   if (ID == 0xD3D3) ID = 0x9486; 
@@ -70,20 +132,24 @@ void setup() {
 }
 
 void loop() {
-  String info = String(Serial.read());
-  if (info.length() > 0 && info[0] == 'W') {
-    pantalla.setCursor(200, 50);
-    info.remove(0, 1);
-    pantalla.print(info);
+  int DebugCvida = BonoRecibido(Vida);
+  int Vida;
+  if (DebugCvida != -1){
+    Vida = DebugCvida;
   }
-  if (info.length() > 0 && info[0] == 'V') {
-    pantalla.setCursor(200, 50);
-    info.remove(0, 1);
-    pantalla.print(info);
-  }
-
+  pantalla.setCursor(220, 150);
+  pantalla.print("V:" + Vida);
+  int infodeLaGranC = 1; //
   /*codigo del boton*/
-
+  int DebugChisit = BonoRecibido(ChisitosIn);
+  if (DebugChisit != -1)
+  {
+    infodeLaGranC = DebugChisit;
+  }
+  if (infodeLaGranC != 1)
+  {
+    dibujarQuickEventJuanitoTech(String(infodeLaGranC), 170);
+  }
   //se fija si me tocan
   TSPoint toque = tactil.getPoint();
 
@@ -125,12 +191,12 @@ void loop() {
             dibujarCasilla(casillaAnterior, false); //Apaga el marco de la vieja
             dibujarCasilla(casillaActual, true);    //Prende el marco de la nueva
 
-            //le mando un whatsapp al otro arduino con la casilla actual
-            Serial.write(casillaActual); 
+            //le mando un whatsapp al otro arduino con la casilla actual. Que son esa anotaciones Chisitos xd
+            MandarBonoEnString(Hotbar, casillaActual);
             delay(150); //Pausa para que no lea dos toques muy rápidos por error
           }
           else {
-            Serial.write(casillaActual); 
+            MandarBonoEnString(Hotbar, casillaActual);
             delay(150);
           }
         }
@@ -163,4 +229,3 @@ void dibujarCasilla(int numeroDeCasilla, bool estaSeleccionada) {
     }
   }
 }
-
