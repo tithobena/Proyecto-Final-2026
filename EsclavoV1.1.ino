@@ -14,13 +14,13 @@
 // para librerias de arduino usen Ultrasonic de Erick Simões, Adafruit GFX Library,
 // LCDtouch, Adafruit ILI9341, servo de michael margolis y MCUFRIEND_kbv.
 
-include <Arduino.h>
+#include <Arduino.h>
 #include <Ultrasonic.h>
 Ultrasonic gustavo(9, 10);
 
 int BonosbrutalmenteDevorados[10] = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
 
-void MandarBonoEnString(int bono, int valor = 0) 
+/*void MandarBonoEnString(int bono, int valor = 0) 
 {                                                                   
   byte paquete[3];
   paquete[0] = (byte)bono;
@@ -28,7 +28,6 @@ void MandarBonoEnString(int bono, int valor = 0)
   paquete[2] = lowByte(valor);
   Serial.write(paquete, 3);
 }
-
 int BonoRecibido(int bonoesperado)
 {
   if (BonosbrutalmenteDevorados[bonoesperado] != -1) {
@@ -63,7 +62,7 @@ int Manuelito = 5;          // los bonos son como ID para los mensajes
 int ADisp = 6;                //tienen un limite del 1 al 9, ya se que es ultramega crocante 
 int LanaDisp = 7;
 int Hotbar = 8;             //el nombre es porque antes iban a llamarse acciones y un cuasinonimo de eso es bonos :V
-
+*/
 //=======================================
 //  Variables de vida y recursos
 //=======================================
