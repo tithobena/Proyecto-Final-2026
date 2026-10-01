@@ -47,13 +47,13 @@ int BonoRecibido(int bonoesperado)
 //=======================================
 //              Bonos
 //=======================================
-int Warden = 1;
-int Vida = 2;
-int ChisitosIn = 3;           
-int Manuelito = 5;
-int ADisp = 6;
-int LanaDisp = 7;
-int Hotbar = 8;
+int IDWarden = 1;
+int IDVida = 2;
+int IDChisitosIn = 3;           
+int IDManuelito = 5;
+int IDADisp = 6;
+int IDLanaDisp = 7;
+int IDHotbar = 8;
                   
 #include <Adafruit_GFX.h>
 #include <MCUFRIEND_kbv.h>
@@ -80,6 +80,7 @@ TouchScreen tactil = TouchScreen(XP, YP, XM, YM, 300);
 const int Cntcudritos = 9;     //cuantos cuadraditos pongo
 const int tamanoCasilla = 50;
 const int Anchbarra = Cntcudritos * tamanoCasilla; 
+int Vida = 100;
 
 //Centrar la barra 
 
@@ -100,14 +101,11 @@ int casillaActual = 0;
 
 void dibujarQuickEventJuanitoTech(String info, int altura)
 {   //<--- muy humano
-  const int anchodelcuadraditocroto = 400;
-  const int altodelomismo = 50;
-  if (info.indexOf("Ch") != -1)
-  {
+  const int ancho = 400;
+  const int alto = 50;
     info.remove(0, 2);
-    TSPoint inicio = TSPoint(480 - anchodelcuadraditocroto, altura + altodelomismo, 0); //no habia Vector 2 asi que tuve que poner esto
-    pantalla.fillRect(inicio.x, inicio.y, anchodelcuadraditocroto, altodelomismo, Negroperu);
-  }
+    TSPoint inicio = TSPoint(480 - ancho, altura + alto, 0); //no habia Vector 2 asi que tuve que poner esto
+    pantalla.fillRect(inicio.x, inicio.y, ancho, alto, Negroperu);
 }
 
 
@@ -132,8 +130,7 @@ void setup() {
 }
 
 void loop() {
-  int DebugCvida = BonoRecibido(Vida);
-  int Vida;
+  int DebugCvida = BonoRecibido(IDVida);
   if (DebugCvida != -1){
     Vida = DebugCvida;
   }
@@ -141,7 +138,7 @@ void loop() {
   pantalla.print("V:" + Vida);
   int infodeLaGranC = 1; //
   /*codigo del boton*/
-  int DebugChisit = BonoRecibido(ChisitosIn);
+  int DebugChisit = BonoRecibido(IDChisitosIn);
   if (DebugChisit != -1)
   {
     infodeLaGranC = DebugChisit;
@@ -192,11 +189,11 @@ void loop() {
             dibujarCasilla(casillaActual, true);    //Prende el marco de la nueva
 
             //le mando un whatsapp al otro arduino con la casilla actual. Que son esa anotaciones Chisitos xd
-            MandarBonoEnString(Hotbar, casillaActual);
+            MandarBonoEnString(IDHotbar, casillaActual);
             delay(150); //Pausa para que no lea dos toques muy rápidos por error
           }
           else {
-            MandarBonoEnString(Hotbar, casillaActual);
+            MandarBonoEnString(IDHotbar, casillaActual);
             delay(150);
           }
         }
