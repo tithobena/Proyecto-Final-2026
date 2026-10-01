@@ -95,7 +95,6 @@ void juegito() {
     if (DiplaSelct(1) && BtnACT())    {
       vidaDelMalditoYHorribleWarden -= 25;
       accionesDisp--;
-      
       Serial.println(String("W") + vidaDelMalditoYHorribleWarden);
     }
 
@@ -106,14 +105,12 @@ void juegito() {
       Serial.println(String("W") + vidaDelMalditoYHorribleWarden);
       //use la misma mrd xd
     }
-
     //Bife
     if (DiplaSelct(3) && BtnACT())    {
       Sucri += 3;
       accionesDisp--;
       Serial.println(String("V") + Sucri);
     }
-
     //Lana
     if (DiplaSelct(4) && BtnACT())    {
       if (cantidadDeLanas > 0) {
