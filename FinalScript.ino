@@ -48,12 +48,13 @@ const uint16_t COLOR_CASILLA   = 0x4208;
 const uint16_t COLOR_BORDE     = 0xAD75;
 const uint16_t COLOR_SOMBRA    = 0x2104;
 const uint16_t COLOR_SELECCION = 0xFFFF;
+const uint16_t NEGRO_GRIS      = 0x31A6;
 //=======================================
 //  Variables de vida y recursos
 //=======================================
 int cantidadDeLanas = 3;
 int vidaDelMalditoYHorribleWarden = 200;
-int Sucri = 20; //es la vida por si revisan este codigo, ###### (insulto obviado)
+int Sucri = 20; //es la vida por si revisan este codigo, ###### (insulto obviado) || ----------> Athos Benasayag <----- siempre te he ODIADO.
 bool Btnpress = true;
 int casillaActual = 0; 
 int casila = -1;
@@ -123,7 +124,8 @@ bool BtnACT(){ //Valor booleano que indica si el boton esta presionado o no
 //===============================
 void juegito() {
   //Espada
-    if (casila == 1 && BtnACT())    {
+
+  if (casila == 1 && BtnACT())    {
       vidaDelMalditoYHorribleWarden -= 25;
       accionesDisp--;
       Serial.println(String("W") + vidaDelMalditoYHorribleWarden);
@@ -259,4 +261,12 @@ void loop() {
     }
   }
   }
+}
+
+void graficarQuickEvent(unsigned long Ttranscurrido, int ExpClkTm, int altura)
+{
+  const int anchoFondo = 350;//(480 - Anchbarra) / 2
+  const int altoFondo = 65;
+  TSPoint inicio = TSPoint((480 - anchoFondo) / 2, ((320 - altoFondo) / 2) - altura, 0);
+  pantalla.fillRect(inicio.x, inicio.y, anchoFondo, altoFondo, NEGRO_GRIS);
 }
