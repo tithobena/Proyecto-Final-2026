@@ -133,8 +133,8 @@ void leerToque() {
     int pixelX = map(toque.x, 150, 900, 0, 480); 
     int pixelY = map(toque.y, 150, 900, 0, 320); 
     //comprobamos si toco algun boton
-    if (pixelY > Pyi && pixelY < Pyi + tamanoCasilla) { //SI ESTA DENTRO DEL EJE Y ENTONCES
-      if (pixelX > Pxi && pixelX < Pxi + Anchbarra) {//ME FIJO SI ESTA DENTRO DE LA BARRA
+    if (pixelY > Pyi && pixelY < Pyi + tamanoCasilla && pixelX > Pxi && pixelX < Pxi + Anchbarra) { //SI ESTA DENTRO DEL EJE X e Y ENTONCES
+   //   if (pixelX > Pxi && pixelX < Pxi + Anchbarra) {//ME FIJO SI ESTA DENTRO DE LA BARRA
         int casillaTocada = (pixelX - Pxi) / tamanoCasilla;//ME FIJO CUAL ITEM TOCO (DIVIDO LA BARRA)
         if (casillaTocada >= 0 && casillaTocada < 9) {//SI TIENE SENTIDO EL NUMERO QUE DA
           if (casillaTocada != casillaActual) {
@@ -152,7 +152,7 @@ void leerToque() {
           else {
             Serial.write(casillaActual); 
             delay(150);
-          }}}}}}
+          }}}}}
 //================================
 // GRAFICOS DE PANTALLA
 //================================
