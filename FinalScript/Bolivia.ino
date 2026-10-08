@@ -62,12 +62,12 @@ void leerToque() {
             dibujarCasilla(casillaAnterior, false); //Apaga el marco de la vieja
             dibujarCasilla(casillaActual, true);    //Prende el marco de la nueva
             //le mando un whatsapp al otro arduino con la casilla actual
-            Serial.write(casillaActual); 
+            Serial.println(casillaActual); 
             casila = casillaActual;
             delay(150); //Pausa para que no lea dos toques muy rápidos por error
           }
           else {
-            Serial.write(casillaActual); 
+            Serial.println(casillaActual); 
             delay(150);
           }}}}}
 
@@ -103,5 +103,5 @@ void graficarQuickEvent(unsigned long Ttranscurrido, int ExpClkTm, int altura)
   pantalla.fillRect(ChisitosInicio.x, ChisitosInicio.y, ChisitosAncho, ChisitosAlto, LIMA_LIMOSO);
   pantalla.fillRect(ChisitosInicio.x + 10, ChisitosInicio.y, ChisitosAncho - 10, ChisitosAlto, VERDE_VERDOSO);
   TSPoint Manuelito = TSPoint(Ttranscurrido - 2, ((320 - ChisitosAlto) / 2) - altura, 0);
-  pantalla.fillRect(Manuelito.x, manuelito.y);
+  //pantalla.fillRect(Manuelito.x, manuelito.y);
 }
