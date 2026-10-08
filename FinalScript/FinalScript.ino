@@ -17,12 +17,7 @@
 // para librerias de arduino usen Ultrasonic de Erick Simões, Adafruit GFX Library,
 // LCDtouch, Adafruit ILI9341, servo de michael margolis y MCUFRIEND_kbv.
 
-//Librerias
-#include <Arduino.h>
-#include <Ultrasonic.h>
-#include <Adafruit_GFX.h>
-#include <MCUFRIEND_kbv.h>
-#include <TouchScreen.h>
+
 
 void setup() {
   Serial.begin(9600); 
