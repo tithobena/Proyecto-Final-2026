@@ -47,14 +47,10 @@ const byte BTN1        = 24;
 //=======================================
 //  Variables de vida y recursos
 //=======================================
-int cantidadDeLanas = 3;
-int vidaDelMalditoYHorribleWarden = 200;
-int Sucri = 20; //es la vida por si revisan este codigo, ###### (insulto obviado) 
 bool Btnpress = true;
 int casillaActual = 0; 
 int casila = -1;
 bool UD = false;
-int accionesDisp = 1; //Cantidad de acciones disponibles (o turnos) por ronda
 bool empiezalobueno = true;
 //Declaraciones UwU
 Ultrasonic gustavo(PIN_TRIGGER, PIN_ECHO);
