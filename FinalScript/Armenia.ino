@@ -1,3 +1,11 @@
+
+//Librerias
+#include <Arduino.h>
+#include <Ultrasonic.h>
+#include <Adafruit_GFX.h>
+#include <MCUFRIEND_kbv.h>
+#include <TouchScreen.h>
+
 //Pines Pantalla Táctil
 const byte YP = A2;  
 const byte XM = A3;  
