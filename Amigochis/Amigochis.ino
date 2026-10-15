@@ -25,6 +25,12 @@ LCDtouch, Adafruit ILI9341, servo de michael margolis y MCUFRIEND_kbv.
 #include <MCUFRIEND_kbv.h>
 #include <TouchScreen.h>
 
+//Pines Pantalla Táctil
+const byte YP = A2;  
+const byte XM = A3;  
+const byte YM = 8;   
+const byte XP = 9;
+
 //Modulos
 #include "pantalla.h"
 #include "juego.h"
@@ -53,7 +59,7 @@ bool empiezalobueno = true;
 //Declaraciones UwU
 Ultrasonic gustavo(PIN_TRIGGER, PIN_ECHO);
 MCUFRIEND_kbv pantalla;
-TouchScreen tactil(9, A2, A3, 8, 300); // XP, YP, XM, YM, resistencia
+TouchScreen tactil(XP, YP, XM, YM, 300); // XP, YP, XM, YM, resistencia
 
 
 //==Juani QUE ES ESTO

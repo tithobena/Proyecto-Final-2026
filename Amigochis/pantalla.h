@@ -29,6 +29,11 @@ extern TouchScreen tactil;
 extern int casillaActual;
 extern int casila;
 
+extern byte YP;  
+extern byte XM;  
+extern byte YM;   
+extern byte XP;
+
 void leerToque();
 void dibujarCasilla(int numeroDeCasilla, bool estaSeleccionada);
 void graficarQuickEvent(unsigned long Ttranscurrido, int ExpClkTm, int altura);

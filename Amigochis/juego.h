@@ -8,6 +8,7 @@ extern int vidaDelMalditoYHorribleWarden;
 extern int Sucri;
 extern int casila;
 extern int accionesDisp;
+extern byte BTN1;
 
 bool QuickEvent();
 bool BtnACT();
