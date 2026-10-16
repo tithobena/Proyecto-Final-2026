@@ -45,7 +45,7 @@ int casila = -1;
 bool UD = false;
 int accionesDisp = 1; //Cantidad de acciones disponibles (o turnos) por ronda
 bool empiezalobueno = true;
-//Declaraciones UwU
+//Declaraciones *** (insulto obviado)
 Ultrasonic gustavo(PIN_TRIGGER, PIN_ECHO);
 MCUFRIEND_kbv pantalla; 
 
