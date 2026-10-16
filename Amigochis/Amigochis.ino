@@ -25,16 +25,17 @@ LCDtouch, Adafruit ILI9341, servo de michael margolis y MCUFRIEND_kbv.
 #include <MCUFRIEND_kbv.h>
 #include <TouchScreen.h>
 
-//Pines Pantalla Táctil
-const byte YP = A2;  
-const byte XM = A3;  
-const byte YM = 8;   
-const byte XP = 9;
+
 
 //Modulos
 #include "pantalla.h"
 #include "juego.h"
 
+//Pines Pantalla Táctil
+const byte YP = A2;  
+const byte XM = A3;  
+const byte YM = 8;   
+const byte XP = 9;
 //Pines Sensor ultrasonido
 const byte PIN_TRIGGER = 22;
 const byte PIN_ECHO    = 23;
@@ -87,12 +88,19 @@ void setup() {
   //Dibujamos 9 casillas cuando arranca el Arduino (que fiaca 9 veces el mismo comando)
   for (int i = 0; i < Cntcudritos; i++) {
     bool estaSeleccionada = (i == casillaActual);
-    //dibujarCasilla(i, estaSeleccionada);
+    dibujarCasilla(i, estaSeleccionada);
   }
 }
 
 void loop() {
+  graficarVida(Sucri, 20, 180, 0x8000);
+  graficarVida(vidaDelMalditoYHorribleWarden, 250, 40, COLOR_SELECCION);
   leerToque();
+  if (Sucri > 20)
+  {
+    vidaDelMalditoYHorribleWarden -= Sucri - 20;
+    Sucri = 20;
+  }
   //==
   if (ULTRASonicJbCOMPANY() == true) {
     if (accionesDisp != 0) {  //si es 0 termina tu turno

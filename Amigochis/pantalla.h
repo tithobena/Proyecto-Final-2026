@@ -13,7 +13,7 @@ const uint16_t Anchbarra = Cntcudritos * tamanoCasilla;
 const uint16_t Pxi = (480 - Anchbarra) / 2; //Posicion x inicial (poreso P.X I.)
 const uint16_t Pyi = 320 - tamanoCasilla - 20; //Aca lo hacemos separado por 20 de abajo
 //colores en formato hexadecimal (RGB565)
-const uint16_t COLOR_FONDO     = 0x6595;
+const uint16_t COLOR_FONDO     = 0x028A;
 const uint16_t COLOR_CASILLA   = 0x4208;
 const uint16_t COLOR_BORDE     = 0xAD75;
 const uint16_t COLOR_SOMBRA    = 0x2104;
@@ -28,13 +28,15 @@ extern MCUFRIEND_kbv pantalla;
 extern TouchScreen tactil;
 extern int casillaActual;
 extern int casila;
+const String objectos[4] = {"espada", "arco", "bife", "lana"};
 
-extern byte YP;  
-extern byte XM;  
-extern byte YM;   
-extern byte XP;
+extern const byte YP;  
+extern const byte XM;  
+extern const byte YM;   
+extern const byte XP;
 
 void leerToque();
 void dibujarCasilla(int numeroDeCasilla, bool estaSeleccionada);
 void graficarQuickEvent(unsigned long Ttranscurrido, int ExpClkTm, int altura);
+void graficarVida(int vidaActual, int vidaMaxima, int yPos, uint16_t colorBarra);
 #endif

@@ -65,24 +65,35 @@ void dibujarCasilla(int numeroDeCasilla, bool estaSeleccionada) {
   pantalla.fillRect(x, y, grosorDelMarco, tamanoCasilla, COLOR_SOMBRA);  //:3     
   pantalla.fillRect(x, y + tamanoCasilla - grosorDelMarco, tamanoCasilla, grosorDelMarco, COLOR_BORDE); 
   pantalla.fillRect(x + tamanoCasilla - grosorDelMarco, y, grosorDelMarco, tamanoCasilla, COLOR_BORDE); 
+
   pantalla.setCursor(x + tamanoCasilla / 2, y + tamanoCasilla / 2);
-  pantalla.print(numeroDeCasilla + 1);
+  String nombre = objectos[numeroDeCasilla];
+  pantalla.print(nombre);
   //Si esta casilla está seleccionada, le dibujamos un marco extra de color blanco brillante
   if (estaSeleccionada) {
     for (int grosor = 0; grosor < (grosorDelMarco + 1); grosor++) { 
       pantalla.drawRect(x + grosor, y + grosor, tamanoCasilla - (grosor*2), tamanoCasilla - (grosor*2), COLOR_SELECCION);
     }}}
-void graficarQuickEvent(unsigned long Ttranscurrido, int ExpClkTm, int altura)
-{
-  const int anchoFondo = 350;//(480 - Anchbarra) / 2
-  const int altoFondo = 65;
-  TSPoint FondoInicio = TSPoint((480 - anchoFondo) / 2, ((320 - altoFondo) / 2) - altura, 0);
-  pantalla.fillRect(FondoInicio.x, FondoInicio.y, anchoFondo, altoFondo, NEGRO_GRIS);
-  const int ChisitosAncho = 20;//(480 - Anchbarra) / 2
-  const int ChisitosAlto = 80;
-  TSPoint ChisitosInicio = TSPoint(ExpClkTm - 10, ((320 - ChisitosAlto) / 2) - altura, 0);
-  pantalla.fillRect(ChisitosInicio.x, ChisitosInicio.y, ChisitosAncho, ChisitosAlto, LIMA_LIMOSO);
-  pantalla.fillRect(ChisitosInicio.x + 10, ChisitosInicio.y, ChisitosAncho - 10, ChisitosAlto, VERDE_VERDOSO);
-  TSPoint Manuelito = TSPoint(Ttranscurrido - 2, ((320 - ChisitosAlto) / 2) - altura, 0);
-  //pantalla.fillRect(Manuelito.x, manuelito.y);
+void graficarQuickEvent(unsigned long Ttranscurrido, int ExpClkTm, int altura) {
+  const int anchoBarra = 312;
+  const int altoBarra = 80;
+  int xBarra = (480 - anchoBarra) / 2; // xBarra = 84
+  int yBarra = (320 - altoBarra) / 2 - altura;
+  pantalla.fillRect(xBarra, yBarra, anchoBarra, altoBarra, NEGRO_GRIS);
+  int xProgreso = xBarra + Ttranscurrido;
+  if (xProgreso > xBarra && xProgreso < (xBarra + anchoBarra)) {
+    pantalla.fillRect(xProgreso - 2, yBarra, 4, altoBarra, COLOR_SELECCION);
+  }
+    int xZonaObjetivo = xBarra + (ExpClkTm - 20);
+  int anchoZonaObjetivo = 40; 
+  pantalla.fillRect(xZonaObjetivo, yBarra, anchoZonaObjetivo, altoBarra, LIMA_LIMOSO);
+  pantalla.fillRect(xZonaObjetivo + 10, yBarra, 20, altoBarra, VERDE_VERDOSO); // Centro ideal
+}
+
+void graficarVida(int vidaActual, int vidaMaxima, int yPos, uint16_t colorBarra) {
+  pantalla.fillRect((480 - 200) / 2, yPos, 200, 15, COLOR_SOMBRA);
+  pantalla.drawRect((480 - 200) / 2, yPos, 200, 15, COLOR_BORDE);
+  if (vidaActual > 0) {
+    pantalla.fillRect((480 - 200) / 2 + 2, yPos + 2, map(constrain(vidaActual, 0, vidaMaxima), 0, vidaMaxima, 0, 196), 11, colorBarra);
+  }
 }

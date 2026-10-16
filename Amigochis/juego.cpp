@@ -1,19 +1,30 @@
 #include "juego.h"
+#include "pantalla.h" // Se agrega para poder invocar graficarQuickEvent
+
+int cantidadDeLanas = 3;
+int vidaDelMalditoYHorribleWarden = 250;
+int Sucri = 20;
+int accionesDisp = 1;
+
+// Resto de tu código en juego.cpp...
 //=======================================
 //  Funciones
 //=======================================
 //==QUICKEVENT
 bool QuickEvent() { //minijuego de reacción/precisión con tiempo límite
+  float ExpClkTm = random(150, 250); //cambie la variable a ExpClkTm para que sea mas entendible, juani no me pegues
+  graficarQuickEvent(0, ExpClkTm, 30);
   delay(1000);
   unsigned long ttts = millis();
-  float ExpClkTm = random(150, 250); //cambie la variable a ExpClkTm para que sea mas entendible, juani no me pegues
   int Ganaste = -1;
   //%%%%%%%%%%IMPORTANTE%%%%%%%%%%%Tarea
   //graficar la barra de 0 a 312, y que haya una linea (ExpClkTm)
   //%%%%%%%%%%IMPORTANTE%%%%%%%%%%%
+  
   while (Ganaste == -1){
   unsigned long Ttranscurrido = millis() - ttts;//Ttranscurrido es el tiempo en milisegundos que ha pasado desde que empezo el evento
   Ttranscurrido = map(Ttranscurrido, 0, 1000, 0, 480) / 4;
+  graficarQuickEvent(Ttranscurrido, ExpClkTm, 30);
   //%%%%%%%%%%IMPORTANTE%%%%%%%%%%%Tarea
   //Hacer que avanze la barra
   //%%%%%%%%%%IMPORTANTE%%%%%%%%%%%
@@ -30,7 +41,12 @@ bool QuickEvent() { //minijuego de reacción/precisión con tiempo límite
     }
   delay(20);
   }
-  return Ganaste == 1;
+  int anchoBarra = 312;
+  int altoBarra = 100;
+  int xBarra = (480 - anchoBarra) / 2;
+  int yBarra = (320 - 70) / 2 - 30;
+  pantalla.fillRect(xBarra - 5, yBarra - 10, anchoBarra + 10, altoBarra + 20, COLOR_FONDO);
+  return (Ganaste == 1);
 }
 
 
