@@ -19,7 +19,7 @@ const byte BTN1        = 24;
 //Pines LEDs
 
 //Hotbar
-const byte Cntcudritos = 5;//cuantos cuadraditos pongo
+const byte Cntcudritos = 4;//cuantos cuadraditos pongo
 const uint16_t tamanoCasilla = 80;
 const uint16_t Anchbarra = Cntcudritos * tamanoCasilla; 
 const uint16_t Pxi = (480 - Anchbarra) / 2; //Posicion x inicial (poreso P.X I.)
@@ -77,6 +77,15 @@ bool QuickEvent() { //minijuego de reacción/precisión con tiempo límite
   Serial.println(String(Ttranscurrido) + "/" + ExpClkTm + "/ 312");
   if (BtnACT())  { //BTNACT ES OBSOLETO
     if (Ttranscurrido > ExpClkTm - 20 && Ttranscurrido < ExpClkTm + 20)    {
+      if (Ttranscurrido >+ ExpClkTm - 6 && Ttranscurrido <= ExpClkTm + 6)
+      {
+        vidaDelMalditoYHorribleWarden -= 25;
+      }
+      if (Ttranscurrido == ExpClkTm)
+      {
+        // hay q poner algo es un frame perfect tiene que tener feedback visual
+        vidaDelMalditoYHorribleWarden -= 125;
+      }
       Ganaste = 1; 
     }else{
       Ganaste = 0;
