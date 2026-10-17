@@ -41,11 +41,11 @@ bool QuickEvent() { //minijuego de reacción/precisión con tiempo límite
     }
   delay(20);
   }
-  int anchoBarra = 312;
-  int altoBarra = 100;
+    int anchoBarra = 312;
+  int altoBarra = 80;
   int xBarra = (480 - anchoBarra) / 2;
-  int yBarra = (320 - 70) / 2 - 30;
-  pantalla.fillRect(xBarra - 5, yBarra - 10, anchoBarra + 10, altoBarra + 20, COLOR_FONDO);
+  int yBarra = (320 - altoBarra) / 2 - 30;
+  pantalla.fillRect(xBarra - 5, yBarra - 5, anchoBarra + 10, altoBarra + 10, COLOR_FONDO);
   return (Ganaste == 1);
 }
 
@@ -102,4 +102,15 @@ void juegito() {
         Serial.println("Cln");
       }
     }
+}
+void reiniciarJuego() {
+  cantidadDeLanas = 3;
+  vidaDelMalditoYHorribleWarden = 250;
+  Sucri = 20;
+  accionesDisp = 1;
+  casillaActual = 0;
+  casila = -1;
+  UD = false;
+  empiezalobueno = true;
+  Btnpress = true;
 }

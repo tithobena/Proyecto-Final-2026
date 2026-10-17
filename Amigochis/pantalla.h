@@ -39,4 +39,9 @@ void leerToque();
 void dibujarCasilla(int numeroDeCasilla, bool estaSeleccionada);
 void graficarQuickEvent(unsigned long Ttranscurrido, int ExpClkTm, int altura);
 void graficarVida(int vidaActual, int vidaMaxima, int yPos, uint16_t colorBarra);
+bool pantallaTocada();
+void dibujarJuego();
+void dibujarMenuInicio();
+void dibujarVictoria();
+void dibujarDerrota();
 #endif

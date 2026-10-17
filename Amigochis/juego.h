@@ -13,9 +13,14 @@ extern bool Btnpress;
 extern bool UD;
 extern bool empiezalobueno;
 extern int casillaActual;
+extern EstadoJuego estado;
 
 bool QuickEvent();
 bool BtnACT();
 void juegito();
+void reiniciarJuego();
+
+enum EstadoJuego { MENU_INICIO, JUGANDO, VICTORIA, DERROTA };
+
 
 #endif

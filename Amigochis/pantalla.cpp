@@ -1,4 +1,49 @@
 #include "pantalla.h"
+//================================
+// MENUS
+//================================
+// Centra un texto en la pantalla (la fuente base mide 6 px de ancho por tamaño)
+void textoCentrado(const char* texto, int y, int tam, uint16_t color) {
+  pantalla.setTextSize(tam);
+  pantalla.setTextColor(color);
+  int ancho = strlen(texto) * 6 * tam;
+  pantalla.setCursor((480 - ancho) / 2, y);
+  pantalla.print(texto);
+  pantalla.setTextSize(1); // volvemos al tamaño normal para las casillas
+  pantalla.setTextColor(COLOR_SELECCION);
+}
+
+bool pantallaTocada() {
+  TSPoint t = tactil.getPoint();
+  pinMode(XM, OUTPUT);
+  pinMode(YP, OUTPUT);
+  return (t.z > 10 && t.z < 1000);
+}
+
+void dibujarJuego() {
+  pantalla.fillScreen(COLOR_FONDO);
+  for (int i = 0; i < Cntcudritos; i++) {
+    dibujarCasilla(i, i == casillaActual);
+  }
+}
+
+void dibujarMenuInicio() {
+  pantalla.fillScreen(COLOR_FONDO);
+  textoCentrado("WardenBattle1.5", 90, 6, COLOR_SELECCION);
+  textoCentrado("El mejor juego bro", 200, 2, LIMA_LIMOSO);
+}
+
+void dibujarVictoria() {
+  pantalla.fillScreen(VERDE_VERDOSO);
+  textoCentrado("GANASTE! OSHI OSHI", 100, 6, COLOR_SELECCION);
+  textoCentrado("Toca para volver al menu", 210, 2, COLOR_SELECCION);
+}
+
+void dibujarDerrota() {
+  pantalla.fillScreen(0x8000);
+  textoCentrado("PERDISTE... B-Baka", 100, 6, COLOR_SELECCION);
+  textoCentrado("Toca para volver al menu", 210, 2, COLOR_SELECCION);
+}
 //===============================
 //  TOUCHSCREEN
 //===============================
@@ -90,10 +135,19 @@ void graficarQuickEvent(unsigned long Ttranscurrido, int ExpClkTm, int altura) {
   pantalla.fillRect(xZonaObjetivo + 10, yBarra, 20, altoBarra, VERDE_VERDOSO); // Centro ideal
 }
 
+
 void graficarVida(int vidaActual, int vidaMaxima, int yPos, uint16_t colorBarra) {
-  pantalla.fillRect((480 - 200) / 2, yPos, 200, 15, COLOR_SOMBRA);
-  pantalla.drawRect((480 - 200) / 2, yPos, 200, 15, COLOR_BORDE);
-  if (vidaActual > 0) {
-    pantalla.fillRect((480 - 200) / 2 + 2, yPos + 2, map(constrain(vidaActual, 0, vidaMaxima), 0, vidaMaxima, 0, 196), 11, colorBarra);
+  const int x = (480 - 200) / 2;
+  const int anchoInterior = 198;
+  int ancho = map(constrain(vidaActual, 0, vidaMaxima), 0, vidaMaxima, 0, anchoInterior);
+
+  pantalla.drawRect(x, yPos, 200, 15, COLOR_BORDE);
+  // parte llena (vida)
+  if (ancho > 0) {
+    pantalla.fillRect(x + 1, yPos + 1, ancho, 13, colorBarra);
+  }
+  // parte vacía (lo que falta)
+  if (ancho < anchoInterior) {
+    pantalla.fillRect(x + 1 + ancho, yPos + 1, anchoInterior - ancho, 13, COLOR_SOMBRA);
   }
 }

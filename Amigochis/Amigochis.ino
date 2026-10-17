@@ -17,33 +17,19 @@ para compilar este codigo, y no se olviden de poner la placa Arduino Nano
 para librerias de arduino usen Ultrasonic de Erick Simões, Adafruit GFX Library,
 LCDtouch, Adafruit ILI9341, servo de michael margolis y MCUFRIEND_kbv.
 */
+#include <Arduino.h>       //Librerias
+#include <Ultrasonic.h>    //Librerias
+#include <Adafruit_GFX.h>  //Librerias
+#include <MCUFRIEND_kbv.h> //Librerias
+#include <TouchScreen.h>   //Librerias
+#include "pantalla.h"      //Modulos
+#include "juego.h"         //Modulos
 
-//Librerias
-#include <Arduino.h>
-#include <Ultrasonic.h>
-#include <Adafruit_GFX.h>
-#include <MCUFRIEND_kbv.h>
-#include <TouchScreen.h>
-
-
-
-//Modulos
-#include "pantalla.h"
-#include "juego.h"
-
-//Pines Pantalla Táctil
-const byte YP = A2;  
-const byte XM = A3;  
-const byte YM = 8;   
-const byte XP = 9;
-//Pines Sensor ultrasonido
-const byte PIN_TRIGGER = 22;
-const byte PIN_ECHO    = 23;
-
-//Pines botones
-const byte BTN1        = 24;
-
-//Pines LEDs
+const byte YP = A2;  const byte XM = A3;  //Pines del tactil
+const byte YM = 8;   const byte XP = 9;   //Pines del tactil
+const byte PIN_TRIGGER = 22;    //Pines Sensor ultrasonido
+const byte PIN_ECHO    = 23;    //Pines Sensor ultrasonido
+const byte BTN1        = 24;    //Pines Boton
 
 //=======================================
 //  Variables de vida y recursos
@@ -53,13 +39,12 @@ int casillaActual = 0;
 int casila = -1;
 bool UD = false;
 bool empiezalobueno = true;
+bool Remember24 = false;
 //Declaraciones UwU
 Ultrasonic gustavo(PIN_TRIGGER, PIN_ECHO);
 MCUFRIEND_kbv pantalla;
 TouchScreen tactil(XP, YP, XM, YM, 300); // XP, YP, XM, YM, resistencia
 
-
-//==Juani QUE ES ESTO
 bool ULTRASonicJbCOMPANY() {
   if (gustavo.read() < 5  && !UD)  {
     UD = true;
@@ -76,7 +61,6 @@ bool ULTRASonicJbCOMPANY() {
   }
 }
 
-
 void setup() {
   Serial.begin(9600); 
   //Configuramos y encendemos la pantalla
@@ -84,7 +68,8 @@ void setup() {
   if (ID == 0xD3D3) ID = 0x9486; 
   pantalla.begin(ID);
   pantalla.setRotation(1); //ponemos la pantalla en horizontal (como debe ir en la caja)
-  pantalla.fillScreen(COLOR_FONDO); //pintamos todo el fondo (de la pantalla)
+  pantalla.fillScreen(NEGRO_GRIS); //pintamos todo el fondo (de la pantalla)
+ // pantalla.fillScreen(COLOR_FONDO); //pintamos todo el fondo (de la pantalla)
   //Dibujamos 9 casillas cuando arranca el Arduino (que fiaca 9 veces el mismo comando)
   for (int i = 0; i < Cntcudritos; i++) {
     bool estaSeleccionada = (i == casillaActual);
@@ -93,11 +78,11 @@ void setup() {
 }
 
 void loop() {
+  while 
   graficarVida(Sucri, 20, 180, 0x8000);
   graficarVida(vidaDelMalditoYHorribleWarden, 250, 40, COLOR_SELECCION);
   leerToque();
-  if (Sucri > 20)
-  {
+  if (Sucri > 20){
     vidaDelMalditoYHorribleWarden -= Sucri - 20;
     Sucri = 20;
   }
