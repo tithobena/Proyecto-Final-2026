@@ -39,7 +39,9 @@ int casillaActual = 0;
 int casila = -1;
 bool UD = false;
 bool empiezalobueno = true;
-bool Remember24 = false;
+EstadoJuego estado = MENU_INICIO;
+bool Remember24 = false; // Referenia a End Of Beggining - Djo
+
 //Declaraciones UwU
 Ultrasonic gustavo(PIN_TRIGGER, PIN_ECHO);
 MCUFRIEND_kbv pantalla;
@@ -69,16 +71,78 @@ void setup() {
   pantalla.begin(ID);
   pantalla.setRotation(1); //ponemos la pantalla en horizontal (como debe ir en la caja)
   pantalla.fillScreen(NEGRO_GRIS); //pintamos todo el fondo (de la pantalla)
+  dibujarMenuInicio();
+}
+
+void loop() {
+  switch (estado) {
+    case MENU_INICIO:
+      if (pantallaTocada()) {
+        reiniciarJuego();
+        estado = JUGANDO;
+        dibujarJuego();   // dibuja fondo + iconos en el mismo toque
+        delay(300);
+      }
+      break;
+    case JUGANDO:
+      jugar();
+      break;
+    case VICTORIA:
+    case DERROTA:
+      if (pantallaTocada()) {
+        estado = MENU_INICIO;
+        dibujarMenuInicio();
+        delay(300);
+      }
+      break;
+  }
+}
+void jugar() {
+  graficarVida(Sucri, 20, 180, 0xF800);
+  graficarVida(vidaDelMalditoYHorribleWarden, 250, 40, COLOR_SELECCION);
+  leerToque();
+  if (Sucri > 20) {
+    vidaDelMalditoYHorribleWarden -= Sucri - 20;
+    Sucri = 20;
+  }
+
+  if (Sucri <= 0) {
+    Serial.println("V0");
+    estado = DERROTA;
+    dibujarDerrota();
+    delay(300);
+    return;
+  }
+  if (vidaDelMalditoYHorribleWarden <= 0) {
+    Serial.println("ganastebro");
+    estado = VICTORIA;
+    dibujarVictoria();
+    delay(300);
+    return;
+  }
+
+  if (ULTRASonicJbCOMPANY() == true) {
+    if (accionesDisp != 0) {
+      juegito();
+    } else if (empiezalobueno) {
+      empiezalobueno = false;
+      Sucri -= QuickEvent() ? 0 : 6;
+      Serial.println(String("V") + Sucri);
+      accionesDisp = 1;
+      empiezalobueno = true;
+    }
+  }
+}
+
  // pantalla.fillScreen(COLOR_FONDO); //pintamos todo el fondo (de la pantalla)
   //Dibujamos 9 casillas cuando arranca el Arduino (que fiaca 9 veces el mismo comando)
-  for (int i = 0; i < Cntcudritos; i++) {
+  /*for (int i = 0; i < Cntcudritos; i++) {
     bool estaSeleccionada = (i == casillaActual);
     dibujarCasilla(i, estaSeleccionada);
   }
 }
 
 void loop() {
-  while 
   graficarVida(Sucri, 20, 180, 0x8000);
   graficarVida(vidaDelMalditoYHorribleWarden, 250, 40, COLOR_SELECCION);
   leerToque();
@@ -112,5 +176,5 @@ void loop() {
       }
     }
   }
-}
+}*/
 

@@ -70,21 +70,21 @@ bool BtnACT(){ //Valor booleano que indica si el boton esta presionado o no
 void juegito() {
   //Espada
 
-  if (casila == 1 && BtnACT())    {
+  if (casila == 0 && BtnACT())    {
       vidaDelMalditoYHorribleWarden -= 25;
       accionesDisp--;
       Serial.println(String("W") + vidaDelMalditoYHorribleWarden);
     }
 
     //Arco
-    if (casila == 2 && BtnACT())    {
+    if (casila == 1 && BtnACT())    {
       vidaDelMalditoYHorribleWarden -= QuickEvent()? 50 : 0;
       accionesDisp--;
       Serial.println(String("W") + vidaDelMalditoYHorribleWarden);
       //use la misma mrd xd
     }
     //Bife
-    if (casila == 3 && BtnACT())    {
+    if (casila == 2 && BtnACT())    {
       Sucri += 4;
       vidaDelMalditoYHorribleWarden -= 10;
       accionesDisp--;
@@ -92,7 +92,7 @@ void juegito() {
       Serial.println(String("W") + vidaDelMalditoYHorribleWarden);
     }
     //Lana
-    if (casila == 4 && BtnACT())    {
+    if (casila == 3 && BtnACT())    {
       if (cantidadDeLanas > 0) {
       accionesDisp = 2;
       cantidadDeLanas--;

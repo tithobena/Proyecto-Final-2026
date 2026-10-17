@@ -29,19 +29,19 @@ void dibujarJuego() {
 
 void dibujarMenuInicio() {
   pantalla.fillScreen(COLOR_FONDO);
-  textoCentrado("WardenBattle1.5", 90, 6, COLOR_SELECCION);
+  textoCentrado("Warden", 90, 4, COLOR_SELECCION);
   textoCentrado("El mejor juego bro", 200, 2, LIMA_LIMOSO);
 }
 
 void dibujarVictoria() {
   pantalla.fillScreen(VERDE_VERDOSO);
-  textoCentrado("GANASTE! OSHI OSHI", 100, 6, COLOR_SELECCION);
+  textoCentrado("GANASTE! OSHI OSHI", 100, 4, COLOR_SELECCION);
   textoCentrado("Toca para volver al menu", 210, 2, COLOR_SELECCION);
 }
 
 void dibujarDerrota() {
   pantalla.fillScreen(0x8000);
-  textoCentrado("PERDISTE... B-Baka", 100, 6, COLOR_SELECCION);
+  textoCentrado("PERDISTE... B-Baka", 100, 4, COLOR_SELECCION);
   textoCentrado("Toca para volver al menu", 210, 2, COLOR_SELECCION);
 }
 //===============================

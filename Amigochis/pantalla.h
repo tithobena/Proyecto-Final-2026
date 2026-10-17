@@ -7,7 +7,7 @@
 #include <TouchScreen.h>
 
 //Hotbar
-const byte Cntcudritos = 5;//cuantos cuadraditos pongo
+const byte Cntcudritos = 4;//cuantos cuadraditos pongo
 const uint16_t tamanoCasilla = 80;
 const uint16_t Anchbarra = Cntcudritos * tamanoCasilla; 
 const uint16_t Pxi = (480 - Anchbarra) / 2; //Posicion x inicial (poreso P.X I.)

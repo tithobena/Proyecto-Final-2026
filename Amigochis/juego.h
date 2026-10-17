@@ -2,7 +2,8 @@
 #define JUEGO_H
 
 #include <Arduino.h>
-
+enum EstadoJuego { MENU_INICIO, JUGANDO, VICTORIA, DERROTA };
+extern EstadoJuego estado;
 extern int cantidadDeLanas;
 extern int vidaDelMalditoYHorribleWarden;
 extern int Sucri;
@@ -20,7 +21,7 @@ bool BtnACT();
 void juegito();
 void reiniciarJuego();
 
-enum EstadoJuego { MENU_INICIO, JUGANDO, VICTORIA, DERROTA };
+
 
 
 #endif
