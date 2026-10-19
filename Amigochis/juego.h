@@ -2,6 +2,11 @@
 #define JUEGO_H
 
 #include <Arduino.h>
+#include <Adafruit_GFX.h>
+#include <MCUFRIEND_kbv.h>
+#include <Servo.h>        
+#include <TouchScreen.h>
+
 enum EstadoJuego { MENU_INICIO, JUGANDO, VICTORIA, DERROTA };
 extern EstadoJuego estado;
 extern int cantidadDeLanas;
@@ -15,6 +20,7 @@ extern bool UD;
 extern bool empiezalobueno;
 extern int casillaActual;
 extern EstadoJuego estado;
+extern const TSPoint TiraLed;
 
 bool QuickEvent();
 bool BtnACT();

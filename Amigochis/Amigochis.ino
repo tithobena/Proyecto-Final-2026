@@ -1,3 +1,4 @@
+
 /*
  ██████╗ ██████╗ ██╗   ██╗██████╗  ██████╗      ██████╗ ███████╗    ██████╗ ██╗ ██████╗ ██╗██╗  ██╗
 ██╔════╝ ██╔══██╗██║   ██║██╔══██╗██╔═══██╗    ██╔═████╗╚════██║    ██╔══██╗██║██╔═══██╗██║╚██╗██╔╝
@@ -22,6 +23,8 @@ LCDtouch, Adafruit ILI9341, servo de michael margolis y MCUFRIEND_kbv.
 #include <Adafruit_GFX.h>  //Librerias
 #include <MCUFRIEND_kbv.h> //Librerias
 #include <TouchScreen.h>   //Librerias
+#include <Servo.h>
+#include <math.h>
 #include "pantalla.h"      //Modulos
 #include "juego.h"         //Modulos
 
@@ -30,13 +33,15 @@ const byte YM = 8;   const byte XP = 9;   //Pines del tactil
 const byte PIN_TRIGGER = 22;    //Pines Sensor ultrasonido
 const byte PIN_ECHO    = 23;    //Pines Sensor ultrasonido
 const byte BTN1        = 24;    //Pines Boton
+const byte Ssignal     = 44;    //BerlinSans
+const TSPoint TiraLed  = TSPoint(40, 41, 43); //athos es una cordenada
 
 //=======================================
 //  Variables de vida y recursos
 //=======================================
-bool Btnpress = true;
+bool Btnpress = false;
 int casillaActual = 0; 
-int casila = -1;
+int casila = 0;
 bool UD = false;
 bool empiezalobueno = true;
 EstadoJuego estado = MENU_INICIO;
@@ -46,18 +51,19 @@ bool Remember24 = false; // Referenia a End Of Beggining - Djo
 Ultrasonic gustavo(PIN_TRIGGER, PIN_ECHO);
 MCUFRIEND_kbv pantalla;
 TouchScreen tactil(XP, YP, XM, YM, 300); // XP, YP, XM, YM, resistencia
+Servo BerlinSans;
 
 bool ULTRASonicJbCOMPANY() {
   if (gustavo.read() < 5  && !UD)  {
     UD = true;
     Serial.println("LOG:A");
+    BerlinSans.write(90);
     return true;
   } else if(UD)  {
     //Serial.println("LOG:B"); //delay(1000);
     return true;
-   
   } else  {
-     
+    BerlinSans.write(0);
     Serial.println("LOG:C");
     return false;
   }
@@ -65,6 +71,12 @@ bool ULTRASonicJbCOMPANY() {
 
 void setup() {
   Serial.begin(9600); 
+  BerlinSans.attach(Ssignal);
+
+  pinMode(TiraLed.x, OUTPUT);  
+  pinMode(TiraLed.y, OUTPUT);
+  pinMode(TiraLed.z, OUTPUT);
+
   //Configuramos y encendemos la pantalla
   uint16_t ID = pantalla.readID();
   if (ID == 0xD3D3) ID = 0x9486; 
@@ -75,6 +87,7 @@ void setup() {
 }
 
 void loop() {
+  
   switch (estado) {
     case MENU_INICIO:
       if (pantallaTocada()) {
@@ -98,14 +111,17 @@ void loop() {
   }
 }
 void jugar() {
-  graficarVida(Sucri, 20, 180, 0xF800);
   graficarVida(vidaDelMalditoYHorribleWarden, 250, 40, COLOR_SELECCION);
   leerToque();
-  if (Sucri > 20) {
-    vidaDelMalditoYHorribleWarden -= Sucri - 20;
-    Sucri = 20;
+  int totalBarras = (Sucri + 19) / 20; // Redondeo hacia arriba para incluir el residuo
+  for (int C = 0; C < totalBarras; C++) {
+      int vidaEnBarra = Sucri - (C * 20);
+      if (vidaEnBarra > 20) {
+          vidaEnBarra = 20;
+      }
+      int yPos = 180 - (C * 20);
+      graficarVida(vidaEnBarra, 20, yPos, 0xF800);
   }
-
   if (Sucri <= 0) {
     Serial.println("V0");
     estado = DERROTA;
@@ -125,11 +141,17 @@ void jugar() {
     if (accionesDisp != 0) {
       juegito();
     } else if (empiezalobueno) {
+      turnoMan(false);
+      digitalWrite(TiraLed.y, 1);
+      digitalWrite(TiraLed.z, 1);
+      BerlinSans.write(95);
       empiezalobueno = false;
-      Sucri -= QuickEvent() ? 0 : 6;
+      Sucri -= QuickEvent() ? 0 : 8;
       Serial.println(String("V") + Sucri);
       accionesDisp = 1;
       empiezalobueno = true;
+      digitalWrite(TiraLed.y, 0);
+      digitalWrite(TiraLed.z, 0);
     }
   }
 }

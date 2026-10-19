@@ -31,12 +31,14 @@ void dibujarMenuInicio() {
   pantalla.fillScreen(COLOR_FONDO);
   textoCentrado("Warden", 90, 4, COLOR_SELECCION);
   textoCentrado("El mejor juego bro", 200, 2, LIMA_LIMOSO);
+  BerlinSans.write(90);
 }
 
 void dibujarVictoria() {
   pantalla.fillScreen(VERDE_VERDOSO);
   textoCentrado("GANASTE! OSHI OSHI", 100, 4, COLOR_SELECCION);
   textoCentrado("Toca para volver al menu", 210, 2, COLOR_SELECCION);
+  BerlinSans.write(0);
 }
 
 void dibujarDerrota() {
@@ -150,4 +152,18 @@ void graficarVida(int vidaActual, int vidaMaxima, int yPos, uint16_t colorBarra)
   if (ancho < anchoInterior) {
     pantalla.fillRect(x + 1 + ancho, yPos + 1, anchoInterior - ancho, 13, COLOR_SOMBRA);
   }
+}
+void turnoMan(bool tuTurno)
+{
+  pantalla.fillRect(0, 0, 480, 40, COLOR_FONDO);
+  pantalla.setCursor(0, 0);
+  pantalla.setTextSize(2.3);
+  if (tuTurno)
+  {
+  pantalla.print("Tu turno");
+  }else
+  {
+    pantalla.print("Turno del warden");
+  }
+    pantalla.setTextSize(1);
 }

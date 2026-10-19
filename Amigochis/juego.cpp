@@ -69,38 +69,59 @@ bool BtnACT(){ //Valor booleano que indica si el boton esta presionado o no
 //===============================
 void juegito() {
   //Espada
-
+  BerlinSans.write(90);
+  if (accionesDisp != 0)
+    turnoMan(true);
   if (casila == 0 && BtnACT())    {
+      BerlinSans.write(85);
+      digitalWrite(TiraLed.x, HIGH);
       vidaDelMalditoYHorribleWarden -= 25;
       accionesDisp--;
       Serial.println(String("W") + vidaDelMalditoYHorribleWarden);
+      delay(300);
+      BerlinSans.write(90);
+      digitalWrite(TiraLed.x, LOW);
     }
 
     //Arco
     if (casila == 1 && BtnACT())    {
+      digitalWrite(TiraLed.z, HIGH);
       vidaDelMalditoYHorribleWarden -= QuickEvent()? 50 : 0;
       accionesDisp--;
       Serial.println(String("W") + vidaDelMalditoYHorribleWarden);
       //use la misma mrd xd
+      digitalWrite(TiraLed.z, LOW);
     }
     //Bife
     if (casila == 2 && BtnACT())    {
-      Sucri += 4;
-      vidaDelMalditoYHorribleWarden -= 10;
+      digitalWrite(TiraLed.y, HIGH);
+      Sucri += 2;
+      vidaDelMalditoYHorribleWarden -= 8;
       accionesDisp--;
       Serial.println(String("V") + Sucri);
       Serial.println(String("W") + vidaDelMalditoYHorribleWarden);
+      delay(300);
+      digitalWrite(TiraLed.y, LOW);
     }
     //Lana
     if (casila == 3 && BtnACT())    {
+      digitalWrite(TiraLed.x, HIGH);
+      digitalWrite(TiraLed.y, HIGH);
+      digitalWrite(TiraLed.z, HIGH);
       if (cantidadDeLanas > 0) {
       accionesDisp = 2;
       cantidadDeLanas--;
       Serial.println("Cl" + String(cantidadDeLanas));
       Serial.println("A" + String(accionesDisp));
+      
       }else {
         Serial.println("Cln");
+        digitalWrite(TiraLed.x, HIGH);
+       delay(300);
       }
+      digitalWrite(TiraLed.x, LOW);
+      digitalWrite(TiraLed.y, LOW);
+      digitalWrite(TiraLed.z, LOW);
     }
 }
 void reiniciarJuego() {
@@ -109,7 +130,7 @@ void reiniciarJuego() {
   Sucri = 20;
   accionesDisp = 1;
   casillaActual = 0;
-  casila = -1;
+  casila = 0;
   UD = false;
   empiezalobueno = true;
   Btnpress = true;

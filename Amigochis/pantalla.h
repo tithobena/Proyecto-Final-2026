@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <Adafruit_GFX.h>
 #include <MCUFRIEND_kbv.h>
+#include <Servo.h>        
 #include <TouchScreen.h>
 
 //Hotbar
@@ -29,6 +30,7 @@ extern TouchScreen tactil;
 extern int casillaActual;
 extern int casila;
 const String objectos[4] = {"espada", "arco", "bife", "lana"};
+extern Servo BerlinSans;
 
 extern const byte YP;  
 extern const byte XM;  
@@ -44,4 +46,5 @@ void dibujarJuego();
 void dibujarMenuInicio();
 void dibujarVictoria();
 void dibujarDerrota();
+void turnoMan(bool tuTurno);
 #endif
