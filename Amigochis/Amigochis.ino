@@ -41,7 +41,7 @@ const TSPoint TiraLed  = TSPoint(40, 41, 43); //athos es una cordenada
 //=======================================
 bool Btnpress = false;
 int casillaActual = 0; 
-int casila = 0;
+int casila = -1;
 bool UD = false;
 bool empiezalobueno = true;
 EstadoJuego estado = MENU_INICIO;

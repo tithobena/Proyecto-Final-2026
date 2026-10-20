@@ -133,7 +133,7 @@ void dibujarCasilla(int numeroDeCasilla, bool estaSeleccionada, int cantidadDeLa
       pantalla.drawRect(x + grosor, y + grosor, tamanoCasilla - (grosor*2), tamanoCasilla - (grosor*2), COLOR_SELECCION);
     }}}
 void graficarQuickEvent(unsigned long Ttranscurrido, int ExpClkTm, int altura) {
-  const int anchoBarra = 312;
+  const int anchoBarra = 400;
   const int altoBarra = 80;
   int xBarra = (480 - anchoBarra) / 2; // xBarra = 84
   int yBarra = (320 - altoBarra) / 2 - altura;

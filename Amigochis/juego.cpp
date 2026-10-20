@@ -26,9 +26,6 @@ bool QuickEvent() { //minijuego de reacción/precisión con tiempo límite
   unsigned long Ttranscurrido = millis() - ttts;//Ttranscurrido es el tiempo en milisegundos que ha pasado desde que empezo el evento
   Ttranscurrido = map(Ttranscurrido, 0, 1000, 0, 480) / 4;
   graficarQuickEvent(Ttranscurrido, ExpClkTm, 30);
-  //%%%%%%%%%%IMPORTANTE%%%%%%%%%%%Tarea
-  //Hacer que avanze la barra
-  //%%%%%%%%%%IMPORTANTE%%%%%%%%%%%
   Serial.println(String(Ttranscurrido) + "/" + ExpClkTm + "/ 312");
   if (BtnACT())  { //BTNACT ES OBSOLETO
     if (Ttranscurrido > ExpClkTm - 15 && Ttranscurrido < ExpClkTm + 15)    {
@@ -153,7 +150,7 @@ void reiniciarJuego() {
   Sucri = 20;
   accionesDisp = 1;
   casillaActual = 0;
-  casila = 0;
+  casila = -1;
   UD = false;
   empiezalobueno = true;
   Btnpress = true;
