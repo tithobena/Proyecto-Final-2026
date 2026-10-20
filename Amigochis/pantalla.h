@@ -37,8 +37,8 @@ extern const byte XM;
 extern const byte YM;   
 extern const byte XP;
 
-void leerToque();
-void dibujarCasilla(int numeroDeCasilla, bool estaSeleccionada);
+void leerToque(int cantidadDeLanas);
+void dibujarCasilla(int numeroDeCasilla, bool estaSeleccionada, int cantidadDeLanas);
 void graficarQuickEvent(unsigned long Ttranscurrido, int ExpClkTm, int altura);
 void graficarVida(int vidaActual, int vidaMaxima, int yPos, uint16_t colorBarra);
 bool pantallaTocada();

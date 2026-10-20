@@ -23,7 +23,7 @@ bool pantallaTocada() {
 void dibujarJuego() {
   pantalla.fillScreen(COLOR_FONDO);
   for (int i = 0; i < Cntcudritos; i++) {
-    dibujarCasilla(i, i == casillaActual);
+    dibujarCasilla(i, i == casillaActual, 5);
   }
 }
 
@@ -43,7 +43,7 @@ void dibujarVictoria() {
 
 void dibujarDerrota() {
   pantalla.fillScreen(0x8000);
-  textoCentrado("PERDISTE... B-Baka", 100, 4, COLOR_SELECCION);
+  textoCentrado("PERDISTE... (insulto obviado)", 100, 4, COLOR_SELECCION);
   textoCentrado("Toca para volver al menu", 210, 2, COLOR_SELECCION);
 }
 //===============================
@@ -65,7 +65,7 @@ void dibujarDerrota() {
       Serial.println(casila);
     }}}*/
 //pantalla ver.
-void leerToque() {
+void leerToque(int cantidadDeLanas) {
   //se fija si me tocan
   TSPoint toque = tactil.getPoint();
   //Es obligatorio restaurar estos pines después de leer el táctil
@@ -84,8 +84,8 @@ void leerToque() {
             int casillaAnterior = casillaActual;//Guardamos la casilla vieja para borrarle el marco blanco
             casillaActual = casillaTocada; //Actualizamos a la nueva casilla
             //Redibujamos las dos casillas que cambiaron
-            dibujarCasilla(casillaAnterior, false); //Apaga el marco de la vieja
-            dibujarCasilla(casillaActual, true);    //Prende el marco de la nueva
+            dibujarCasilla(casillaAnterior, false, cantidadDeLanas); //Apaga el marco de la vieja
+            dibujarCasilla(casillaActual, true, cantidadDeLanas);    //Prende el marco de la nueva
             //le mando un whatsapp al otro arduino con la casilla actual
             Serial.println(casillaActual); 
             casila = casillaActual;
@@ -101,7 +101,7 @@ void leerToque() {
 //================================
 // GRAFICOS DE PANTALLA
 //================================
-void dibujarCasilla(int numeroDeCasilla, bool estaSeleccionada) {
+void dibujarCasilla(int numeroDeCasilla, bool estaSeleccionada, int cantidadDeLanas) {
   //Calculamos en qué posición X va esta casilla en particular
   int x = Pxi + (numeroDeCasilla * tamanoCasilla);
   int y = Pyi;
@@ -109,13 +109,24 @@ void dibujarCasilla(int numeroDeCasilla, bool estaSeleccionada) {
   // Dibujamos el cuadrado base y los bordes para que tenga efecto 3D
   pantalla.fillRect(x, y, tamanoCasilla, tamanoCasilla, COLOR_CASILLA);
   pantalla.fillRect(x, y, tamanoCasilla, grosorDelMarco, COLOR_SOMBRA);       
-  pantalla.fillRect(x, y, grosorDelMarco, tamanoCasilla, COLOR_SOMBRA);  //:3     
+  pantalla.fillRect(x, y, grosorDelMarco, tamanoCasilla, COLOR_SOMBRA);  //:3  athos no eres agus como para poner el ":3"   
   pantalla.fillRect(x, y + tamanoCasilla - grosorDelMarco, tamanoCasilla, grosorDelMarco, COLOR_BORDE); 
   pantalla.fillRect(x + tamanoCasilla - grosorDelMarco, y, grosorDelMarco, tamanoCasilla, COLOR_BORDE); 
 
   pantalla.setCursor(x + tamanoCasilla / 2, y + tamanoCasilla / 2);
   String nombre = objectos[numeroDeCasilla];
-  pantalla.print(nombre);
+  if (numeroDeCasilla == 2)
+  {
+    int ancho = strlen(cantidadDeLanas) * 6 * 1.1;
+    pantalla.setTextSize(1.1);
+    pantalla.setCursor(x + tamanoCasilla - ancho - 5, y + tamanoCasilla - 15);
+    pantalla.print(cantidadDeLanas);
+    pantalla.setTextSize(1.0);
+    if (cantidadDeLanas == 0)
+    {
+      pantalla.fillRect(x + 3, y + (tamanoCasilla / 2) - 5, tamanoCasilla - 3, 10, 0x8000);
+    }
+  }
   //Si esta casilla está seleccionada, le dibujamos un marco extra de color blanco brillante
   if (estaSeleccionada) {
     for (int grosor = 0; grosor < (grosorDelMarco + 1); grosor++) { 
@@ -131,10 +142,11 @@ void graficarQuickEvent(unsigned long Ttranscurrido, int ExpClkTm, int altura) {
   if (xProgreso > xBarra && xProgreso < (xBarra + anchoBarra)) {
     pantalla.fillRect(xProgreso - 2, yBarra, 4, altoBarra, COLOR_SELECCION);
   }
-    int xZonaObjetivo = xBarra + (ExpClkTm - 20);
-  int anchoZonaObjetivo = 40; 
+  int anchoZonaObjetivo = 30; 
+  int xZonaObjetivo = xBarra + (ExpClkTm - anchoZonaObjetivo / 2);
   pantalla.fillRect(xZonaObjetivo, yBarra, anchoZonaObjetivo, altoBarra, LIMA_LIMOSO);
-  pantalla.fillRect(xZonaObjetivo + 10, yBarra, 20, altoBarra, VERDE_VERDOSO); // Centro ideal
+  pantalla.fillRect(xZonaObjetivo + 11, yBarra, 8, altoBarra, VERDE_VERDOSO); // Centro ideal
+  pantalla.fillRect(ExpClkTm - 2, yBarra- 3, 2, altoBarra + 2, 0xFDE0);
 }
 
 

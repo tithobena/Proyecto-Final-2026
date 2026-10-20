@@ -1,10 +1,11 @@
 #include "juego.h"
 #include "pantalla.h" // Se agrega para poder invocar graficarQuickEvent
 
-int cantidadDeLanas = 3;
+int cantidadDeLanas = 5;
 int vidaDelMalditoYHorribleWarden = 250;
 int Sucri = 20;
 int accionesDisp = 1;
+bool LanaUsable = true;
 
 // Resto de tu código en juego.cpp...
 //=======================================
@@ -30,7 +31,28 @@ bool QuickEvent() { //minijuego de reacción/precisión con tiempo límite
   //%%%%%%%%%%IMPORTANTE%%%%%%%%%%%
   Serial.println(String(Ttranscurrido) + "/" + ExpClkTm + "/ 312");
   if (BtnACT())  { //BTNACT ES OBSOLETO
-    if (Ttranscurrido > ExpClkTm - 20 && Ttranscurrido < ExpClkTm + 20)    {
+    if (Ttranscurrido > ExpClkTm - 15 && Ttranscurrido < ExpClkTm + 15)    {
+      if (Ttranscurrido > ExpClkTm - 4 && Ttranscurrido < ExpClkTm + 4) 
+      {
+        if (Ttranscurrido == ExpClkTm)
+        {
+          if (casila != 2){
+          vidaDelMalditoYHorribleWarden -= 120;
+          } else
+          {
+            vidaDelMalditoYHorribleWarden -= 40;
+          }
+        }
+        else
+        {
+          if (casila != 2){
+          vidaDelMalditoYHorribleWarden -= 35;
+          } else
+          {
+            vidaDelMalditoYHorribleWarden -= 4;
+          }
+        }
+      }
       Ganaste = 1; 
     }else{
       Ganaste = 0;
@@ -39,7 +61,7 @@ bool QuickEvent() { //minijuego de reacción/precisión con tiempo límite
   if (Ttranscurrido > 312)  {
     Ganaste = 0;
     }
-  delay(20);
+  delay(8);
   }
     int anchoBarra = 312;
   int altoBarra = 80;
@@ -95,7 +117,7 @@ void juegito() {
     //Bife
     if (casila == 2 && BtnACT())    {
       digitalWrite(TiraLed.y, HIGH);
-      Sucri += 2;
+      Sucri += 3;
       vidaDelMalditoYHorribleWarden -= 8;
       accionesDisp--;
       Serial.println(String("V") + Sucri);
@@ -108,8 +130,9 @@ void juegito() {
       digitalWrite(TiraLed.x, HIGH);
       digitalWrite(TiraLed.y, HIGH);
       digitalWrite(TiraLed.z, HIGH);
-      if (cantidadDeLanas > 0) {
+      if (cantidadDeLanas > 0 && LanaUsable) {
       accionesDisp = 2;
+      LanaUsable = false;
       cantidadDeLanas--;
       Serial.println("Cl" + String(cantidadDeLanas));
       Serial.println("A" + String(accionesDisp));

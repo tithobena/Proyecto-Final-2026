@@ -112,7 +112,7 @@ void loop() {
 }
 void jugar() {
   graficarVida(vidaDelMalditoYHorribleWarden, 250, 40, COLOR_SELECCION);
-  leerToque();
+  leerToque(cantidadDeLanas);
   int totalBarras = (Sucri + 19) / 20; // Redondeo hacia arriba para incluir el residuo
   for (int C = 0; C < totalBarras; C++) {
       int vidaEnBarra = Sucri - (C * 20);
@@ -152,6 +152,7 @@ void jugar() {
       empiezalobueno = true;
       digitalWrite(TiraLed.y, 0);
       digitalWrite(TiraLed.z, 0);
+      LanaUsable = true;
     }
   }
 }

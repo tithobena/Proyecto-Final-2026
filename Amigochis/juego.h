@@ -17,6 +17,7 @@ extern int accionesDisp;
 extern const byte BTN1;
 extern bool Btnpress;
 extern bool UD;
+extern bool LanaUsable;
 extern bool empiezalobueno;
 extern int casillaActual;
 extern EstadoJuego estado;
