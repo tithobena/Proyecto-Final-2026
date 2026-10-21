@@ -13,6 +13,8 @@ const uint16_t tamanoCasilla = 80;
 const uint16_t Anchbarra = Cntcudritos * tamanoCasilla; 
 const uint16_t Pxi = (480 - Anchbarra) / 2; //Posicion x inicial (poreso P.X I.)
 const uint16_t Pyi = 320 - tamanoCasilla - 20; //Aca lo hacemos separado por 20 de abajo
+
+
 //colores en formato hexadecimal (RGB565)
 const uint16_t COLOR_FONDO     = 0x028A;
 const uint16_t COLOR_CASILLA   = 0x4208;
@@ -29,7 +31,8 @@ extern MCUFRIEND_kbv pantalla;
 extern TouchScreen tactil;
 extern int casillaActual;
 extern int casila;
-const String objectos[4] = {"espada", "arco", "bife", "lana"};
+extern const String objectos[4];
+extern String nombresCasillas[4];
 extern Servo BerlinSans;
 
 extern const byte YP;  
@@ -41,10 +44,14 @@ void leerToque(int cantidadDeLanas);
 void dibujarCasilla(int numeroDeCasilla, bool estaSeleccionada, int cantidadDeLanas);
 void graficarQuickEvent(unsigned long Ttranscurrido, int ExpClkTm, int altura);
 void graficarVida(int vidaActual, int vidaMaxima, int yPos, uint16_t colorBarra);
-bool pantallaTocada();
+// Se añadieron estas dos líneas:
+void dibujarFondoQuickEvent(int ExpClkTm, int altura);
+void actualizarCursorQuickEvent(unsigned long tAnt, unsigned long tNuevo, int ExpClkTm, int altura);
+
 void dibujarJuego();
 void dibujarMenuInicio();
 void dibujarVictoria();
 void dibujarDerrota();
 void turnoMan(bool tuTurno);
+extern String baiaba;
 #endif

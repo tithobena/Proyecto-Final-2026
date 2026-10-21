@@ -22,11 +22,13 @@ extern bool empiezalobueno;
 extern int casillaActual;
 extern EstadoJuego estado;
 extern const TSPoint TiraLed;
+extern TouchScreen tactil;
 
 bool QuickEvent();
 bool BtnACT();
 void juegito();
 void reiniciarJuego();
+extern bool pantallaTocada();
 
 
 

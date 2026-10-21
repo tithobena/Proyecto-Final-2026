@@ -13,57 +13,50 @@ bool LanaUsable = true;
 //=======================================
 //==QUICKEVENT
 bool QuickEvent() { //minijuego de reacción/precisión con tiempo límite
-  float ExpClkTm = random(150, 250); //cambie la variable a ExpClkTm para que sea mas entendible, juani no me pegues
-  graficarQuickEvent(0, ExpClkTm, 30);
+  float ExpClkTm = random(150, 250); 
+  dibujarFondoQuickEvent(ExpClkTm, 30);
+  actualizarCursorQuickEvent(0, 0, ExpClkTm, 30); // Posición inicial en 0
   delay(1000);
   unsigned long ttts = millis();
   int Ganaste = -1;
-  //%%%%%%%%%%IMPORTANTE%%%%%%%%%%%Tarea
-  //graficar la barra de 0 a 312, y que haya una linea (ExpClkTm)
-  //%%%%%%%%%%IMPORTANTE%%%%%%%%%%%
-  
+  unsigned long ultimoTtranscurrido = 0;
   while (Ganaste == -1){
-  unsigned long Ttranscurrido = millis() - ttts;//Ttranscurrido es el tiempo en milisegundos que ha pasado desde que empezo el evento
-  Ttranscurrido = map(Ttranscurrido, 0, 1000, 0, 480) / 4;
-  graficarQuickEvent(Ttranscurrido, ExpClkTm, 30);
-  //%%%%%%%%%%IMPORTANTE%%%%%%%%%%%Tarea
-  //Hacer que avanze la barra
-  //%%%%%%%%%%IMPORTANTE%%%%%%%%%%%
-  Serial.println(String(Ttranscurrido) + "/" + ExpClkTm + "/ 312");
-  if (BtnACT())  { //BTNACT ES OBSOLETO
-    if (Ttranscurrido > ExpClkTm - 15 && Ttranscurrido < ExpClkTm + 15)    {
-      if (Ttranscurrido > ExpClkTm - 4 && Ttranscurrido < ExpClkTm + 4) 
-      {
-        if (Ttranscurrido == ExpClkTm)
-        {
-          if (casila != 2){
-          vidaDelMalditoYHorribleWarden -= 120;
-          } else
-          {
-            vidaDelMalditoYHorribleWarden -= 40;
+    unsigned long Ttranscurrido = millis() - ttts;
+    Ttranscurrido = map(Ttranscurrido, 0, 1000, 0, 480) / 4;
+    if (Ttranscurrido != ultimoTtranscurrido) {
+      actualizarCursorQuickEvent(ultimoTtranscurrido, Ttranscurrido, ExpClkTm, 30);
+      ultimoTtranscurrido = Ttranscurrido;
+    }
+    Serial.println(String(Ttranscurrido) + "/" + ExpClkTm + "/ 312");
+    if (BtnACT() or pantallaTocada())  { 
+      if (Ttranscurrido > ExpClkTm - 15 && Ttranscurrido < ExpClkTm + 15)    {
+        if (Ttranscurrido > ExpClkTm - 4 && Ttranscurrido < ExpClkTm + 4)  {
+          if (Ttranscurrido == ExpClkTm)  {
+            if (casila != 2){
+              vidaDelMalditoYHorribleWarden -= 120;
+            } else {
+              vidaDelMalditoYHorribleWarden -= 40;
+            }
+          }
+          else  {
+            if (casila != 2){
+              vidaDelMalditoYHorribleWarden -= 35;
+            } else {
+              vidaDelMalditoYHorribleWarden -= 4;
+            }
           }
         }
-        else
-        {
-          if (casila != 2){
-          vidaDelMalditoYHorribleWarden -= 35;
-          } else
-          {
-            vidaDelMalditoYHorribleWarden -= 4;
-          }
-        }
+        Ganaste = 1; 
+      } else {
+        Ganaste = 0;
       }
-      Ganaste = 1; 
-    }else{
+    }
+    if (Ttranscurrido > 312)  {
       Ganaste = 0;
     }
+    delay(8);
   }
-  if (Ttranscurrido > 312)  {
-    Ganaste = 0;
-    }
-  delay(8);
-  }
-    int anchoBarra = 312;
+  int anchoBarra = 312;
   int altoBarra = 80;
   int xBarra = (480 - anchoBarra) / 2;
   int yBarra = (320 - altoBarra) / 2 - 30;
@@ -148,7 +141,7 @@ void juegito() {
     }
 }
 void reiniciarJuego() {
-  cantidadDeLanas = 3;
+  cantidadDeLanas = 5;
   vidaDelMalditoYHorribleWarden = 250;
   Sucri = 20;
   accionesDisp = 1;
@@ -156,5 +149,6 @@ void reiniciarJuego() {
   casila = 0;
   UD = false;
   empiezalobueno = true;
-  Btnpress = true;
+  Btnpress = false;
+  baiaba = objectos[casila];
 }

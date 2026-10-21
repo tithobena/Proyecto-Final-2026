@@ -1,4 +1,6 @@
 #include "pantalla.h"
+const String objectos[4] = {"espada", "arco", "bife", "lana"};
+String baiaba = objectos[0];
 //================================
 // MENUS
 //================================
@@ -17,7 +19,9 @@ bool pantallaTocada() {
   TSPoint t = tactil.getPoint();
   pinMode(XM, OUTPUT);
   pinMode(YP, OUTPUT);
-  return (t.z > 10 && t.z < 1000);
+  if (t.z != 0) {return (true);}
+  else{return (false);}
+  
 }
 
 void dibujarJuego() {
@@ -89,6 +93,7 @@ void leerToque(int cantidadDeLanas) {
             //le mando un whatsapp al otro arduino con la casilla actual
             Serial.println(casillaActual); 
             casila = casillaActual;
+            baiaba = objectos[casila];
             delay(150); //Pausa para que no lea dos toques muy rápidos por error
           }
           else {
@@ -112,9 +117,17 @@ void dibujarCasilla(int numeroDeCasilla, bool estaSeleccionada, int cantidadDeLa
   pantalla.fillRect(x, y, grosorDelMarco, tamanoCasilla, COLOR_SOMBRA);  //:3  athos no eres agus como para poner el ":3"   
   pantalla.fillRect(x, y + tamanoCasilla - grosorDelMarco, tamanoCasilla, grosorDelMarco, COLOR_BORDE); 
   pantalla.fillRect(x + tamanoCasilla - grosorDelMarco, y, grosorDelMarco, tamanoCasilla, COLOR_BORDE); 
+ String texto = objectos[numeroDeCasilla]; 
+  int anchoTexto = texto.length() * 6; // 6 píxeles por carácter en tamaño 1
+  int altoTexto = 8;                  // 8 píxeles de alto en tamaño 1
+  int cursorX = x + (tamanoCasilla - anchoTexto) / 2;
+  int cursorY = y + (tamanoCasilla - altoTexto) / 2;
 
-  pantalla.setCursor(x + tamanoCasilla / 2, y + tamanoCasilla / 2);
-  String nombre = objectos[numeroDeCasilla];
+  pantalla.setTextSize(1);
+  pantalla.setTextColor(COLOR_SELECCION);
+  pantalla.setCursor(cursorX, cursorY);
+  pantalla.print(texto);
+
   if (numeroDeCasilla == 2)
   {
     int ancho = strlen(cantidadDeLanas) * 6 * 1.1;
@@ -126,6 +139,7 @@ void dibujarCasilla(int numeroDeCasilla, bool estaSeleccionada, int cantidadDeLa
     {
       pantalla.fillRect(x + 3, y + (tamanoCasilla / 2) - 5, tamanoCasilla - 3, 10, 0x8000);
     }
+      
   }
   //Si esta casilla está seleccionada, le dibujamos un marco extra de color blanco brillante
   if (estaSeleccionada) {
@@ -148,7 +162,63 @@ void graficarQuickEvent(unsigned long Ttranscurrido, int ExpClkTm, int altura) {
   pantalla.fillRect(xZonaObjetivo + 11, yBarra, 8, altoBarra, VERDE_VERDOSO); // Centro ideal
   pantalla.fillRect(ExpClkTm - 2, yBarra- 3, 2, altoBarra + 2, 0xFDE0);
 }
+void dibujarFondoQuickEvent(int ExpClkTm, int altura) {
+  const int anchoBarra = 312;
+  const int altoBarra = 80;
+  int xBarra = (480 - anchoBarra) / 2; 
+  int yBarra = (320 - altoBarra) / 2 - altura;
+  
+  pantalla.fillRect(xBarra, yBarra, anchoBarra, altoBarra, NEGRO_GRIS);
+  
+  int anchoZonaObjetivo = 30; 
+  int xZonaObjetivo = xBarra + (ExpClkTm - anchoZonaObjetivo / 2);
+  pantalla.fillRect(xZonaObjetivo, yBarra, anchoZonaObjetivo, altoBarra, LIMA_LIMOSO);
+  pantalla.fillRect(xZonaObjetivo + 11, yBarra, 8, altoBarra, VERDE_VERDOSO); 
+  pantalla.fillRect(xBarra + ExpClkTm - 2, yBarra - 3, 2, altoBarra + 2, 0xFDE0);
+}
+void actualizarCursorQuickEvent(unsigned long tAnt, unsigned long tNuevo, int ExpClkTm, int altura) {
+  const int anchoBarra = 312;
+  const int altoBarra = 80;
+  int xBarra = (480 - anchoBarra) / 2;
+  int yBarra = (320 - altoBarra) / 2 - altura;
+  
+  int anchoZonaObjetivo = 30; 
+  int xZonaObjetivo = xBarra + (ExpClkTm - anchoZonaObjetivo / 2);
 
+  //Limpiar la pos anterior del cursor restaurando su fondo correspondiente
+  if (tAnt > 0 && tAnt <= anchoBarra) {
+    int xAnt = xBarra + tAnt;
+    if (xAnt >= xBarra && xAnt < xBarra + anchoBarra) {
+      if (xAnt >= xZonaObjetivo && xAnt < xZonaObjetivo + anchoZonaObjetivo) {
+        if (xAnt >= xZonaObjetivo + 11 && xAnt < xZonaObjetivo + 11 + 8) {
+          pantalla.fillRect(xAnt - 2, yBarra, 4, altoBarra, VERDE_VERDOSO);
+        } else {
+          pantalla.fillRect(xAnt - 2, yBarra, 4, altoBarra, LIMA_LIMOSO);
+        }
+      } else {
+        pantalla.fillRect(xAnt - 2, yBarra, 4, altoBarra, NEGRO_GRIS);
+      }
+    }
+  }
+
+  //Dibujar el nuevo cursor con el color dinamico según la zona
+  if (tNuevo > 0 && tNuevo <= anchoBarra) {
+    int xNuevo = xBarra + tNuevo;
+    if (xNuevo >= xBarra && xNuevo < xBarra + anchoBarra) {
+      uint16_t colorCursor = COLOR_SELECCION;
+      
+      if (xNuevo >= xZonaObjetivo && xNuevo < xZonaObjetivo + anchoZonaObjetivo) {
+        if (xNuevo >= xZonaObjetivo + 11 && xNuevo < xZonaObjetivo + 11 + 8) {
+          colorCursor = VERDE_VERDOSO; 
+        } else {
+          colorCursor = LIMA_LIMOSO;   
+        }
+      }
+      
+      pantalla.fillRect(xNuevo - 2, yBarra, 4, altoBarra, colorCursor);
+    }
+  }
+}
 
 void graficarVida(int vidaActual, int vidaMaxima, int yPos, uint16_t colorBarra) {
   const int x = (480 - 200) / 2;
