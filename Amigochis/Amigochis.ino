@@ -39,7 +39,7 @@ const TSPoint TiraLed  = TSPoint(40, 41, 43); //athos es una cordenada
 //=======================================
 //  Variables de vida y recursos
 //=======================================
-bool Btnpress = false;
+bool Btnpress = true;
 int casillaActual = 0; 
 int casila = 0;
 bool UD = false;
