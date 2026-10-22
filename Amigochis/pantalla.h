@@ -24,7 +24,7 @@ const uint16_t COLOR_SELECCION = 0xFFFF;
 const uint16_t NEGRO_GRIS      = 0x31A6;
 const uint16_t LIMA_LIMOSO     = 0x07E0;
 const uint16_t VERDE_VERDOSO   = 0x0400;
-const uint16_t ROJITO          = 
+const uint16_t ROJITO          = 0xF800;
 
 //Vars. externas (andan fuera)
 
