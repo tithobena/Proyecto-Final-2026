@@ -173,7 +173,7 @@ void dibujarCasilla(int numeroDeCasilla, bool estaSeleccionada, int cantidadDeLa
   pantalla.setCursor(cursorX, cursorY);
   pantalla.print(texto);
 
-  if (numeroDeCasilla == 2)
+  if (numeroDeCasilla == 3)
   {
     int ancho = strlen(cantidadDeLanas) * 6 * 1.1;
     pantalla.setTextSize(1.1);
