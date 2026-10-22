@@ -1,5 +1,10 @@
 #ifndef PANTALLA_H
 #define PANTALLA_H
+#include "gotworries.h"
+
+// ... (tus otras declaraciones)
+// En tu archivo pantalla.h
+void dibujarFotogramaAnimacion(int x, int y, int frameIndex, int escala = 2);
 
 #include <Arduino.h>
 #include <Adafruit_GFX.h>
@@ -58,6 +63,7 @@ void turnoMan(bool tuTurno);
 void truquilloSonic(int x, int y, int w, int h, uint16_t color);
 extern String baiaba;
 extern int vidaEnBarra;
+extern bool BtnACT();
 
 
 static const uint16_t PROGMEM image_minecraft_bow_16x16_pixels[] = {

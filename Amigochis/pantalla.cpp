@@ -42,11 +42,28 @@ void dibujarJuego() {
 }
 
 void dibujarMenuInicio() {
-  pantalla.fillScreen(COLOR_FONDO);
-  textoCentrado("Warden", 90, 4, COLOR_SELECCION);
-  textoCentrado("El mejor juego bro", 200, 2, LIMA_LIMOSO);
-  BerlinSans.write(90);
-} // que pongo bro
+  pantalla.fillScreen(0x0);
+  int frameActual = 0;
+  int ultimoFrameDibujado = -1; // Variable para rastrear el fotograma actual
+  unsigned long tiempoUltimoFrame = millis();
+
+  // Dibujamos el texto estático una sola vez al entrar al menú
+  textoCentrado("El mejor juego bro", 260, 2, COLOR_SELECCION);
+
+  while (BtnACT() == 0) {
+    // IMPORTANTE: Solo redibujamos la animación si el fotograma cambió
+    if (frameActual != ultimoFrameDibujado) {
+      dibujarFotogramaAnimacion(184, 25, frameActual, 2);
+      ultimoFrameDibujado = frameActual;
+    }
+
+    // Controlamos el tiempo de cada fotograma según tu array de delays
+    if (millis() - tiempoUltimoFrame >= bitmap_anim_delays[frameActual]) {
+      tiempoUltimoFrame = millis();
+      frameActual = (frameActual + 1) % BITMAP_ANIM_FRAME_COUNT; 
+    }
+  }
+}
 
 void dibujarVictoria() {
   pantalla.fillScreen(VERDE_VERDOSO);
@@ -112,7 +129,26 @@ void leerToque(int cantidadDeLanas) {
           }}}}}
 
 
-
+void dibujarFotogramaAnimacion(int x, int y, int frameIndex, int escala) {
+  if (frameIndex < 0 || frameIndex >= BITMAP_ANIM_FRAME_COUNT) return;
+  const unsigned char* framePtr = (const unsigned char*)pgm_read_word(&bitmap_anim_frames[frameIndex]);
+  pantalla.startWrite();
+  for (int py = 0; py < BITMAP_ANIM_HEIGHT; py++) {
+    for (int px = 0; px < BITMAP_ANIM_WIDTH; px++) {
+      int idx = py * BITMAP_ANIM_WIDTH + px;
+      uint16_t colorPixel = pgm_read_word(framePtr + (idx * 2));
+      colorPixel = __builtin_bswap16(colorPixel);
+      
+        if (escala == 1) {
+          pantalla.writePixel(x + px, y + py, colorPixel);
+        } else {
+          pantalla.writeFillRect(x + (px * escala), y + (py * escala), escala, escala, colorPixel);
+        }
+      
+    }
+  }
+  pantalla.endWrite();
+}
 //================================
 // GRAFICOS DE PANTALLA
 //================================
@@ -124,7 +160,7 @@ void dibujarCasilla(int numeroDeCasilla, bool estaSeleccionada, int cantidadDeLa
   // Dibujamos el cuadrado base y los bordes para que tenga efecto 3D
   pantalla.fillRect(x, y, tamanoCasilla, tamanoCasilla, COLOR_CASILLA);
   pantalla.fillRect(x, y, tamanoCasilla, grosorDelMarco, SOMBRA);       
-  pantalla.fillRect(x, y, grosorDelMarco, tamanoCasilla, SOMBRA);  //:3  athos no eres agus como para poner el ":3"   
+  pantalla.fillRect(x, y, grosorDelMarco, tamanoCasilla, SOMBRA);  //:3  
   pantalla.fillRect(x, y + tamanoCasilla - grosorDelMarco, tamanoCasilla, grosorDelMarco, COLOR_BORDE); 
   pantalla.fillRect(x + tamanoCasilla - grosorDelMarco, y, grosorDelMarco, tamanoCasilla, COLOR_BORDE); 
  String texto = objectos[numeroDeCasilla]; 

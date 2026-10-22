@@ -27,7 +27,7 @@ const byte Ssignal     = 44;    //BerlinSans
 const TSPoint TiraLed  = TSPoint(40, 41, 43); //athos es una cordenada
 //=======================================
 //  Variables de vida y recursos
-bool Btnpress = true;
+bool Btnpress = false;
 int casillaActual = 0; 
 int casila = 0;
 bool UD = false;
@@ -66,32 +66,36 @@ void setup() {
   if (ID == 0xD3D3) ID = 0x9486; 
   pantalla.begin(ID);
   pantalla.setRotation(1); //ponemos la pantalla en horizontal (como debe ir en la caja)
-  pantalla.fillScreen(NEGRO_GRIS); //pintamos todo el fondo (de la pantalla)
-  dibujarMenuInicio();
+  
   accionesDisp == 1;
+  estado = DERROTA;
 }
 
 void loop() {
   
   switch (estado) {
     case MENU_INICIO:
-      if (pantallaTocada()) {
+      
         reiniciarJuego();
         estado = JUGANDO;
         dibujarJuego();   
         delay(300);
-      }
+      
       break;
     case JUGANDO:
       jugar();
       break;
     case VICTORIA:
     case DERROTA:
-      if (pantallaTocada()) {
+      //if (pantallaTocada()) {
+        
         estado = MENU_INICIO;
+        BerlinSans.write(90);
+        while (pantallaTocada() == false or BtnACT() == false) {
         dibujarMenuInicio();
+        }
         delay(300);
-      }
+      
       break;
   }
 }
