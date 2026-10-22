@@ -48,8 +48,8 @@ void dibujarVictoria() {
 
 void dibujarDerrota() {
   pantalla.fillScreen(0x8000);
-  textoCentrado("PERDISTE... (insulto obviado)", 100, 4, COLOR_SELECCION);
-  textoCentrado("Toca para volver al menu", 210, 2, COLOR_SELECCION);
+  textoCentrado("Has muerto!", 100, 4, COLOR_SELECCION);
+  textoCentrado("Volver al menu", 210, 2, COLOR_SELECCION);
 }
 //===============================
 //  TOUCHSCREEN
@@ -257,31 +257,97 @@ void actualizarCursorQuickEvent(unsigned long tAnt, unsigned long tNuevo, int Ex
 }
 
 void graficarVida(int vidaActual, int vidaMaxima, int yPos, uint16_t colorBarra) {
-  const int x = (480 - 200) / 2;
-  const int anchoInterior = 198;
-  int ancho = map(constrain(vidaActual, 0, vidaMaxima), 0, vidaMaxima, 0, anchoInterior);
+  const int totalCorazones = 10; // 10 corazones estilo Minecraft clásico
+  int escala = 2;                // Escala de tamaño (9x9 * 2 = 18x18 píxeles por corazón)
+  int anchoCorazon = 9 * escala;
+  int espacioEntreCorazones = 3;
+  
+  int anchoTotalBarra = (totalCorazones * anchoCorazon) + ((totalCorazones - 1) * espacioEntreCorazones);
+  int xInicio = (480 - anchoTotalBarra) / 2;
 
-  pantalla.drawRect(x, yPos, 200, 15, COLOR_BORDE);
-  // parte llena (vida)
-  if (ancho > 0) {
-    pantalla.fillRect(x + 1, yPos + 1, ancho, 13, colorBarra);
-  }
-  // parte vacía (lo que falta)
-  if (ancho < anchoInterior) {
-    pantalla.fillRect(x + 1 + ancho, yPos + 1, anchoInterior - ancho, 13, COLOR_SOMBRA);
+  float vidaPorCorazon = (float)vidaMaxima / totalCorazones;
+
+  for (int i = 0; i < totalCorazones; i++) {
+    int xCorazon = xInicio + (i * (anchoCorazon + espacioEntreCorazones));
+    
+    float umbralCompleto = (i + 1) * vidaPorCorazon;
+    float umbralMitad = umbralCompleto - (vidaPorCorazon / 2.0);
+
+    const uint16_t* imgAUsar = nullptr;
+
+    if (vidaActual >= umbralCompleto) {
+      imgAUsar = image_full_pixels;      // Corazón lleno
+    } else if (vidaActual >= umbralMitad) {
+      imgAUsar = image_half_pixels;      // Corazón a la mitad
+    } else {
+      imgAUsar = image_empty_pixels;     // Corazón vacío (nuevo)
+    }
+
+    // Dibujo ultrarrápido usando la función nativa con escalado por software directo
+    // Esto evita el bucle pesado de fillRect individual y elimina el "lag" en pantalla.
+    for (int py = 0; py < 9; py++) {
+      for (int px = 0; px < 9; px++) {
+        uint16_t colorPixel = pgm_read_word(&imgAUsar[py * 9 + px]);
+        
+        // Si el color no es negro absoluto, lo pintamos (manejando transparencia simulada)
+        if (colorPixel != 0x0000) {
+          pantalla.fillRect(xCorazon + (px * escala), yPos + (py * escala), escala, escala, colorPixel);
+        } else {
+          // Rellenamos el fondo del espacio vacío con el color de fondo para evitar rastros
+          pantalla.fillRect(xCorazon + (px * escala), yPos + (py * escala), escala, escala, COLOR_FONDO);
+        }
+      }
+    }
   }
 }
-void turnoMan(bool tuTurno)
-{
-  pantalla.fillRect(0, 0, 480, 40, COLOR_FONDO);
-  pantalla.setCursor(0, 0);
-  pantalla.setTextSize(2.3);
-  if (tuTurno)
-  {
-  pantalla.print("Tu turno");
-  }else
-  {
-    pantalla.print("Turno del warden");
+
+void graficarBarraBossWarden(int vidaActual, int vidaMaxima) {
+  // Variable estática para recordar la última vida dibujada y evitar redibujos innecesarios
+  static int vidaAnterior = -1;
+  
+  //(bro no es el turno, no es gracioso que parpadees)
+  if (vidaActual == vidaAnterior) {
+    return;
   }
+  vidaAnterior = vidaActual; //Actualizamos registro
+  const int anchoBarra = 360;
+  const int altoBarra = 16;
+  const int xBarra = (480 - anchoBarra) / 2; 
+  const int yBarra = 12;                      
+  const uint16_t COLOR_BORDE_BOSS  = 0x4810; 
+  const uint16_t COLOR_FONDO_BOSS  = 0x1883; 
+  const uint16_t COLOR_VIDA_WARDEN = 0x881F; 
+  pantalla.drawRect(xBarra - 2, yBarra - 2, anchoBarra + 4, altoBarra + 4, COLOR_BORDE_BOSS);
+  pantalla.drawRect(xBarra - 1, yBarra - 1, anchoBarra + 2, altoBarra + 2, COLOR_BORDE_BOSS);
+  pantalla.fillRect(xBarra, yBarra, anchoBarra, altoBarra, COLOR_FONDO_BOSS);
+  int vidaClampeada = constrain(vidaActual, 0, vidaMaxima);
+  int anchoActual = map(vidaClampeada, 0, vidaMaxima, 0, anchoBarra);
+  if (anchoActual > 0) {
+    pantalla.fillRect(xBarra, yBarra, anchoActual, altoBarra, COLOR_VIDA_WARDEN);
+  }
+  if (anchoActual < anchoBarra) {
+    pantalla.fillRect(xBarra + anchoActual, yBarra, anchoBarra - anchoActual, altoBarra, COLOR_FONDO_BOSS);
+  }
+  pantalla.setTextSize(1);
+  pantalla.setTextColor(COLOR_SELECCION);
+  int anchoTexto = 6 * 6; 
+  pantalla.setCursor((480 - anchoTexto) / 2, yBarra - 10);
+  pantalla.print("Warden");
+}
+void turnoMan(bool tuTurno) {
+  static int estadoAnteriorTurno = -1; 
+  int turnoActualInt = tuTurno ? 1 : 0;
+  if (turnoActualInt != estadoAnteriorTurno) {
+    estadoAnteriorTurno = turnoActualInt;
+    pantalla.fillRect(20, 35, 440, 45, COLOR_FONDO);
+    pantalla.setCursor(20, 35);
+    pantalla.setTextSize(2); 
+    pantalla.setTextColor(COLOR_SELECCION);
+    if (tuTurno) {
+      pantalla.print("Tu turno");
+    } else {
+      pantalla.print("Turno del warden");
+    }
     pantalla.setTextSize(1);
+  }
 }

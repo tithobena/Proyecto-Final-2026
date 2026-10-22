@@ -23,6 +23,8 @@ extern int casillaActual;
 extern EstadoJuego estado;
 extern const TSPoint TiraLed;
 extern TouchScreen tactil;
+extern bool tuTurno;
+void turnoMan(bool tuTurno);
 
 bool QuickEvent();
 bool BtnACT();

@@ -85,8 +85,9 @@ bool BtnACT(){ //Valor booleano que indica si el boton esta presionado o no
 void juegito() {
   //Espada
   BerlinSans.write(90);
-  if (accionesDisp != 0)
+  if (accionesDisp != 0) {
     turnoMan(true);
+  }
   if (casila == 0 && BtnACT())    {
       BerlinSans.write(85);
       digitalWrite(TiraLed.x, HIGH);

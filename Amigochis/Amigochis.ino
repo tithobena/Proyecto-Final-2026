@@ -96,7 +96,7 @@ void loop() {
   }
 }
 void jugar() {
-  graficarVida(vidaDelMalditoYHorribleWarden, 250, 40, COLOR_SELECCION);
+  graficarBarraBossWarden(vidaDelMalditoYHorribleWarden, 250);
   leerToque(cantidadDeLanas);
   int totalBarras = (Sucri + 19) / 20; // Redondeo hacia arriba para incluir el residuo
   for (int C = 0; C < totalBarras; C++) {
