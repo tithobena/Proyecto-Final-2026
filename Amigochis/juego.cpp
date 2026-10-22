@@ -70,6 +70,7 @@ bool BtnACT(){ //Valor booleano que indica si el boton esta presionado o no
   if (digitalRead(BTN1) == HIGH){ //si me tocan xdd
   if (Btnpress)    {
       Btnpress = false;
+      dibujarCasilla(cantidadDeLanas, bool , int);
       return true;
     }
       return false;

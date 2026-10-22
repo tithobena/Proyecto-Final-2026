@@ -42,7 +42,7 @@ extern const byte YM;
 extern const byte XP;
 
 void leerToque(int cantidadDeLanas);
-void dibujarCasilla(int numeroDeCasilla, bool estaSeleccionada, int cantidadDeLanas);
+extern void dibujarCasilla(int numeroDeCasilla, bool estaSeleccionada, int cantidadDeLanas);
 void graficarQuickEvent(unsigned long Ttranscurrido, int ExpClkTm, int altura);
 void graficarVida(int vidaActual, int vidaMaxima, int yPos, uint16_t colorBarra);
 void graficarBarraBossWarden(int vidaActual, int vidaMaxima);
@@ -57,7 +57,7 @@ void dibujarDerrota();
 void turnoMan(bool tuTurno);
 void truquilloSonic(int x, int y, int w, int h, uint16_t color);
 extern String baiaba;
-
+extern int vidaEnBarra;
 
 
 static const uint16_t PROGMEM image_minecraft_bow_16x16_pixels[] = {
