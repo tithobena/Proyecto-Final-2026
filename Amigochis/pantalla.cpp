@@ -1,4 +1,5 @@
 #include "pantalla.h"
+
 const String objectos[4] = {"espada", "arco", "bife", "lana"};
 String baiaba = objectos[0];
 //================================
@@ -122,6 +123,41 @@ void dibujarCasilla(int numeroDeCasilla, bool estaSeleccionada, int cantidadDeLa
   int altoTexto = 8;                  // 8 píxeles de alto en tamaño 1
   int cursorX = x + (tamanoCasilla - anchoTexto) / 2;
   int cursorY = y + (tamanoCasilla - altoTexto) / 2;
+
+  //imagenes
+  const uint16_t* imagenActual = nullptr;
+  switch (numeroDeCasilla) {
+    case 0: imagenActual = image_minecraft_diamond_sword_16x16_pixels; break;
+    case 1: imagenActual = image_minecraft_bow_16x16_pixels; break;
+    case 2: imagenActual = image_minecraft_cooked_beef_16x16_pixels; break;
+    case 3: imagenActual = image_minecraft_white_wool_16x16_pixels; break;
+    default: break;
+  }
+
+  // Si hay una imagen válida, la escalamos y dibujamos píxel por píxel
+  if (imagenActual != nullptr) {
+    int escala = 5; // 80 / 16 = 5
+    // Margen interno opcional para que no pegue contra el borde del marco (ej: 4 píxeles de margen)
+    int margen = 0; 
+    
+    for (int py = 0; py < 16; py++) {
+      for (int px = 0; px < 16; px++) {
+        // Leemos el color desde la memoria PROGMEM del Arduino Mega
+        uint16_t colorPixel = pgm_read_word(&imagenActual[py * 16 + px]);
+        
+        // Si el color NO es negro (0x0000), lo dibujamos como un bloque de escala x escala
+        if (colorPixel != 0x0000) {
+          pantalla.fillRect(
+            x + grosorDelMarco + (px * escala), 
+            y + grosorDelMarco + (py * escala), 
+            escala, 
+            escala, 
+            colorPixel
+          );
+        }
+      }
+    }
+  }
 
   pantalla.setTextSize(1);
   pantalla.setTextColor(COLOR_SELECCION);
