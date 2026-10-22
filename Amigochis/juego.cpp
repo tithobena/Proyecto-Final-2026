@@ -2,7 +2,7 @@
 #include "pantalla.h" // Se agrega para poder invocar graficarQuickEvent
 
 int cantidadDeLanas = 5;
-int vidaDelMalditoYHorribleWarden = 250;
+int vidaDelMalditoYHorribleWarden = 400;
 int Sucri = 20;
 int accionesDisp = 1;
 bool LanaUsable = true;
@@ -13,7 +13,7 @@ bool LanaUsable = true;
 //=======================================
 //==QUICKEVENT
 bool QuickEvent() { //minijuego de reacción/precisión con tiempo límite
-  float ExpClkTm = random(150, 250); 
+  float ExpClkTm = random(125, 275); 
   dibujarFondoQuickEvent(ExpClkTm, 30);
   actualizarCursorQuickEvent(0, 0, ExpClkTm, 30); // Posición inicial en 0
   delay(1000);
@@ -28,9 +28,8 @@ bool QuickEvent() { //minijuego de reacción/precisión con tiempo límite
       ultimoTtranscurrido = Ttranscurrido;
     }
     Serial.println(String(Ttranscurrido) + "/" + ExpClkTm + "/ 312");
-    if (BtnACT() or pantallaTocada())  { 
-      if (Ttranscurrido > ExpClkTm - 15 && Ttranscurrido < ExpClkTm + 15)    {
-        if (Ttranscurrido > ExpClkTm - 4 && Ttranscurrido < ExpClkTm + 4)  {
+    if (BtnACT() || pantallaTocada())  { 
+        if (Ttranscurrido > ExpClkTm - 10 && Ttranscurrido < ExpClkTm + 10)  {
           if (Ttranscurrido == ExpClkTm)  {
             if (casila != 2){
               vidaDelMalditoYHorribleWarden -= 120;
@@ -38,23 +37,15 @@ bool QuickEvent() { //minijuego de reacción/precisión con tiempo límite
               vidaDelMalditoYHorribleWarden -= 40;
             }
           }
-          else  {
-            if (casila != 2){
-              vidaDelMalditoYHorribleWarden -= 35;
-            } else {
-              vidaDelMalditoYHorribleWarden -= 4;
-            }
-          }
+          Ganaste = 1; 
         }
-        Ganaste = 1; 
-      } else {
+        else {
         Ganaste = 0;
       }
     }
     if (Ttranscurrido > 312)  {
       Ganaste = 0;
     }
-    delay(8);
   }
   int anchoBarra = 312;
   int altoBarra = 80;
@@ -70,12 +61,12 @@ bool BtnACT(){ //Valor booleano que indica si el boton esta presionado o no
   if (digitalRead(BTN1) == HIGH){ //si me tocan xdd
   if (Btnpress)    {
       Btnpress = false;
-      dibujarCasilla(cantidadDeLanas, bool , int);
+      dibujarCasilla(3 ,casila == 3,cantidadDeLanas);
       return true;
     }
       return false;
   }
-  Btnpress = true;
+  Btnpress = true;  
   return false;
 }
 
@@ -103,7 +94,7 @@ void juegito() {
     //Arco
     if (casila == 1 && BtnACT())    {
       digitalWrite(TiraLed.z, HIGH);
-      vidaDelMalditoYHorribleWarden -= QuickEvent()? 50 : 0;
+      vidaDelMalditoYHorribleWarden -= QuickEvent()? 49 : 0;
       accionesDisp--;
       Serial.println(String("W") + vidaDelMalditoYHorribleWarden);
       //use la misma mrd xd
@@ -112,8 +103,13 @@ void juegito() {
     //Bife
     if (casila == 2 && BtnACT())    {
       digitalWrite(TiraLed.y, HIGH);
+      if (Sucri + 3 > 20)
+      {
+        Sucri = int(((Sucri + 3) - 20) * 0.3);
+      }else{
       Sucri += 3;
-      vidaDelMalditoYHorribleWarden -= 8;
+      }
+      vidaDelMalditoYHorribleWarden -= 6;
       accionesDisp--;
       Serial.println(String("V") + Sucri);
       Serial.println(String("W") + vidaDelMalditoYHorribleWarden);
@@ -144,7 +140,7 @@ void juegito() {
 }
 void reiniciarJuego() {
   cantidadDeLanas = 5;
-  vidaDelMalditoYHorribleWarden = 250;
+  vidaDelMalditoYHorribleWarden = 400;
   Sucri = 20;
   accionesDisp = 1;
   casillaActual = 0;

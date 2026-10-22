@@ -105,7 +105,8 @@ void jugar() {
           vidaEnBarra = 20;
       }
       int yPos = 180 - (C * 20);
-      graficarVida(vidaEnBarra, 20, yPos, 0xF800);
+      
+      graficarVida(vidaEnBarra, 20, yPos, 0x000);
   }
   if (Sucri <= 0) {
     Serial.println("V0");
@@ -131,7 +132,7 @@ void jugar() {
       digitalWrite(TiraLed.z, 1);
       BerlinSans.write(95);
       empiezalobueno = false;
-      Sucri -= QuickEvent() ? 0 : 8;
+      Sucri -= QuickEvent() ? 0 : 9;
       Serial.println(String("V") + Sucri);
       accionesDisp = 1;
       empiezalobueno = true;
