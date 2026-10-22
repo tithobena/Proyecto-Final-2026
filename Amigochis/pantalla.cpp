@@ -15,7 +15,16 @@ void textoCentrado(const char* texto, int y, int tam, uint16_t color) {
   pantalla.setTextSize(1); // volvemos al tamaño normal para las casillas
   pantalla.setTextColor(COLOR_SELECCION);
 }
-
+void truquilloSonic(int x, int y, int w, int h, uint16_t color) {
+  for (int i = 0; i < w; i++) {
+    for (int j = 0; j < h; j++) {
+      //Bro esto hace un cuadrado "semitransparente" (Cómo en )
+      if ((i + j) % 2 == 0) {
+        pantalla.drawPixel(x + i, y + j, color);
+      }
+    }
+  }
+}
 bool pantallaTocada() {
   TSPoint t = tactil.getPoint();
   pinMode(XM, OUTPUT);
