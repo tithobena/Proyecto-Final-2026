@@ -127,6 +127,7 @@ void dibujarCasilla(int numeroDeCasilla, bool estaSeleccionada, int cantidadDeLa
   pantalla.fillRect(x, y, grosorDelMarco, tamanoCasilla, COLOR_SOMBRA);  //:3  athos no eres agus como para poner el ":3"   
   pantalla.fillRect(x, y + tamanoCasilla - grosorDelMarco, tamanoCasilla, grosorDelMarco, COLOR_BORDE); 
   pantalla.fillRect(x + tamanoCasilla - grosorDelMarco, y, grosorDelMarco, tamanoCasilla, COLOR_BORDE); 
+<<<<<<< Updated upstream
  String texto = objectos[numeroDeCasilla]; 
   int anchoTexto = texto.length() * 6; // 6 píxeles por carácter en tamaño 1
   int altoTexto = 8;                  // 8 píxeles de alto en tamaño 1
@@ -174,6 +175,12 @@ void dibujarCasilla(int numeroDeCasilla, bool estaSeleccionada, int cantidadDeLa
   pantalla.print(texto);
 
   if (numeroDeCasilla == 3)
+=======
+  pantalla.print(nombre);
+  pantalla.setCursor(x + tamanoCasilla / 2, y + tamanoCasilla / 2);
+  String nombre = objectos[numeroDeCasilla];
+  if (numeroDeCasilla == 2)
+>>>>>>> Stashed changes
   {
     int ancho = strlen(cantidadDeLanas) * 6 * 1.1;
     pantalla.setTextSize(1.1);
@@ -184,7 +191,11 @@ void dibujarCasilla(int numeroDeCasilla, bool estaSeleccionada, int cantidadDeLa
     {
       pantalla.fillRect(x + 3, y + (tamanoCasilla / 2) - 5, tamanoCasilla - 3, 10, 0x8000);
     }
+<<<<<<< Updated upstream
       
+=======
+      pantalla.print(nombre);
+>>>>>>> Stashed changes
   }
   //Si esta casilla está seleccionada, le dibujamos un marco extra de color blanco brillante
   if (estaSeleccionada) {
