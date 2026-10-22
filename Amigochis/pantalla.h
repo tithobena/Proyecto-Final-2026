@@ -1,65 +1,108 @@
+/*=====================================================================
+  pantalla.h - Declaraciones y recursos graficos de Amigochis
+=======================================================================
+  INDICE
+    [1] INCLUDES
+    [2] HOTBAR (medidas de la barra de casillas)
+    [3] COLORES (RGB565)
+    [4] VARIABLES EXTERNAS
+    [5] FUNCIONES
+          5.1 Tactil
+          5.2 Hotbar
+          5.3 HUD (turno, vida del jugador, vida del boss)
+          5.4 QuickEvent (minijuego de reaccion)
+          5.5 Pantallas completas
+          5.6 Efectos
+    [6] BITMAPS
+          6.1 Items 16x16 (arco, bife, espada, lana)
+          6.2 Corazones 9x9 (lleno, vacio, medio)
+=====================================================================*/
 #ifndef PANTALLA_H
 #define PANTALLA_H
 
+//=====================================================================
+// [1] INCLUDES
+//=====================================================================
 #include <Arduino.h>
 #include <Adafruit_GFX.h>
 #include <MCUFRIEND_kbv.h>
-#include <Servo.h>        
+#include <Servo.h>
 #include <TouchScreen.h>
 
-//Hotbar
-const byte Cntcudritos = 4;//cuantos cuadraditos pongo
+//=====================================================================
+// [2] HOTBAR (medidas de la barra de casillas)
+//=====================================================================
+const byte Cntcudritos = 4;                      // Cuantos cuadraditos pongo
 const uint16_t tamanoCasilla = 88;
-const uint16_t Anchbarra = Cntcudritos * tamanoCasilla; 
-const uint16_t Pxi = (480 - Anchbarra) / 2; //Posicion x inicial (poreso P.X I.)
-const uint16_t Pyi = 320 - tamanoCasilla - 20; //Aca lo hacemos separado por 20 de abajo
+const uint16_t Anchbarra = Cntcudritos * tamanoCasilla;
+const uint16_t Pxi = (480 - Anchbarra) / 2;      // Posicion x inicial (por eso P.X I.)
+const uint16_t Pyi = 320 - tamanoCasilla - 20;   // Separada 20 px del borde de abajo
 
-
-//colores en formato hexadecimal (RGB565)
+//=====================================================================
+// [3] COLORES (formato hexadecimal RGB565)
+//=====================================================================
 const uint16_t COLOR_FONDO     = 0x028A;
 const uint16_t COLOR_CASILLA   = 0x4208;
 const uint16_t COLOR_BORDE     = 0xAD75;
-const uint16_t SOMBRA    = 0x2104;
+const uint16_t SOMBRA          = 0x2104;
 const uint16_t COLOR_SELECCION = 0xFFFF;
 const uint16_t NEGRO_GRIS      = 0x31A6;
 const uint16_t LIMA_LIMOSO     = 0x07E0;
 const uint16_t VERDE_VERDOSO   = 0x0400;
 const uint16_t ROJITO          = 0xF800;
 
-//Vars. externas (andan fuera)
-
+//=====================================================================
+// [4] VARIABLES EXTERNAS (definidas en otros archivos)
+//=====================================================================
+// Hardware (Amigochis.ino)
 extern MCUFRIEND_kbv pantalla;
 extern TouchScreen tactil;
+extern Servo BerlinSans;
+extern const byte YP;
+extern const byte XM;
+extern const byte YM;
+extern const byte XP;
+
+// Estado de las casillas
 extern int casillaActual;
 extern int casila;
 extern const String objectos[4];
 extern String nombresCasillas[4];
-extern Servo BerlinSans;
+extern String baiaba;
+extern int vidaEnBarra;
 
-extern const byte YP;  
-extern const byte XM;  
-extern const byte YM;   
-extern const byte XP;
-
+//=====================================================================
+// [5] FUNCIONES
+//=====================================================================
+// 5.1 Tactil
 void leerToque(int cantidadDeLanas);
+
+// 5.2 Hotbar
 extern void dibujarCasilla(int numeroDeCasilla, bool estaSeleccionada, int cantidadDeLanas);
-void graficarQuickEvent(unsigned long Ttranscurrido, int ExpClkTm, int altura);
+
+// 5.3 HUD
+void turnoMan(bool tuTurno);
 void graficarVida(int vidaActual, int vidaMaxima, int yPos, uint16_t colorBarra);
 void graficarBarraBossWarden(int vidaActual, int vidaMaxima);
-// Se añadieron estas dos líneas:
+
+// 5.4 QuickEvent
+void graficarQuickEvent(unsigned long Ttranscurrido, int ExpClkTm, int altura);
 void dibujarFondoQuickEvent(int ExpClkTm, int altura);
 void actualizarCursorQuickEvent(unsigned long tAnt, unsigned long tNuevo, int ExpClkTm, int altura);
 
+// 5.5 Pantallas completas
 void dibujarJuego();
 void dibujarMenuInicio();
 void dibujarVictoria();
 void dibujarDerrota();
-void turnoMan(bool tuTurno);
+
+// 5.6 Efectos
 void truquilloSonic(int x, int y, int w, int h, uint16_t color);
-extern String baiaba;
-extern int vidaEnBarra;
 
-
+//=====================================================================
+// [6] BITMAPS
+//=====================================================================
+// 6.1 Items 16x16
 static const uint16_t PROGMEM image_minecraft_bow_16x16_pixels[] = {
   0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
   0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x49A2,0x49A2,0x49A2,0x49A2,0x0000,
@@ -132,7 +175,7 @@ static const uint16_t PROGMEM image_minecraft_white_wool_16x16_pixels[] = {
   0x0000,0x0000,0x0000,0x0000,0x0000,0x9CF3,0x9CD3,0x8C92,0x632C,0x5B0C,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
   0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0xA514,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000};
 
-// Textura de corazón vacío de 9x9 (mismo tamaño que full y half)
+// 6.2 Corazones 9x9 (lleno, vacio, medio; mismo tamano los tres)
 static const uint16_t PROGMEM image_full_pixels[] = {
   0x0000,0x0000,0x0001,0x0001,0x0000,0x0001,0x0001,0x0000,0x0000,
   0x0000,0x0001,0xF882,0xF882,0x0001,0xF882,0xF882,0x0001,0x0000,
