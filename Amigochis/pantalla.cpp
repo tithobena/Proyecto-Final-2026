@@ -444,8 +444,8 @@ void dibujarDerrota() {
   // >>> PEGAR AQUI (reemplazando las dos lineas de abajo) la linea completa
   // >>> "static const uint16_t PROGMEM image_paint_6_pixels[] = {...};"
   // >>> de tu pantalla.cpp ORIGINAL (es un array de 184x18 = 3312 valores en una sola linea)
-  #error "Falta pegar image_paint_6_pixels en dibujarDerrota() de pantalla.cpp"
-
+  //#error "Falta pegar image_paint_6_pixels en dibujarDerrota() de pantalla.cpp"
+  
   //truquilloSonic(0,0, 480, 320, ROJITO);
   pantallaScanlines(ROJITO);
   const char* string_3_text = "Score: 250";
