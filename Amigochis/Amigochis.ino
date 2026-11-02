@@ -86,7 +86,6 @@ bool ULTRASonicJbCOMPANY() {
     return false;
   }
 }
-
 //=======================================
 //  Setup
 //=======================================
@@ -141,7 +140,7 @@ void loop() {
 //  Turno de juego
 //=======================================
 void jugar() {
-  graficarBarraBossWarden(vidaDelMalditoYHorribleWarden, 250);
+  graficarBarraBossWarden(vidaDelMalditoYHorribleWarden, 400);
   leerToque(cantidadDeLanas);
 
   // Barras de vida del jugador (20 puntos por barra, redondeo hacia arriba)
@@ -180,7 +179,9 @@ void jugar() {
       digitalWrite(TiraLed.z, 1);
       BerlinSans.write(95);
       empiezalobueno = false;
-      Sucri -= QuickEvent() ? 0 : 9;
+      bool javio = QuickEvent();
+      Sucri -= javio? 0 : 9;
+      dibujarDan(true, !(javio) * 9, false);
       Serial.println(String("V") + Sucri);
       accionesDisp = 1;
       empiezalobueno = true;

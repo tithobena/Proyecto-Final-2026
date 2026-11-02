@@ -40,6 +40,8 @@ extern TouchScreen tactil;
 //=======================================
 void turnoMan(bool tuTurno);
 bool QuickEvent();
+bool EXPOQuick();
+bool InQuickEvent();
 bool BtnACT();
 void juegito();
 void reiniciarJuego();
