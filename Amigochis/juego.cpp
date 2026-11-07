@@ -111,11 +111,11 @@ void juegito() {
   // Bife
   if (casila == 2 && BtnACT()) {
     digitalWrite(TiraLed.y, HIGH);
-    if (Sucri + 3 > 20) {
+  
       Sucri = int(((Sucri + 3) - 20) * 0.3);
-    } else {
+   
       Sucri += 3;
-    }
+    
     vidaDelMalditoYHorribleWarden -= 6;
     accionesDisp--;
     Serial.println(String("V") + Sucri);
