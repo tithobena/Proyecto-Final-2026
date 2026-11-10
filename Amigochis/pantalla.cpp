@@ -484,7 +484,6 @@ void dibujarDan(bool Warden, int dinamico, bool PlagueInc)
     pantalla.setTextColor(Colorifinal);
     pantalla.setTextSize(tamal);
     pantalla.print(String(dinamico));
-    delay(3);
     pantalla.setCursor(200, (float)yi + (i * 0.6f));
     pantalla.setTextColor(Colorifinal);
     pantalla.setTextSize(tamal);

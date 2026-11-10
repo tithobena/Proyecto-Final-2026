@@ -58,7 +58,7 @@ bool QuickEvent() {
   
   // Borra la barra del minijuego
   int anchoBarra = 312;
-  int altoBarra = 80;
+  int altoBarra = 88;
   int xBarra = (480 - anchoBarra) / 2;
   int yBarra = (320 - altoBarra) / 2 - 30;
   pantalla.fillRect(xBarra - 5, yBarra - 5, anchoBarra + 10, altoBarra + 10, COLOR_FONDO);
@@ -82,7 +82,10 @@ bool InQuickEvent()
   
   actualizarCursorQuickEvent(0, 0, Experofafoiso, 30);
   dibujarFondoQuickEvent(Experofafoiso, 30, anchoBarra, altoBarra);
-  
+  pantalla.setCursor((anchoBarra / 2) - 30, altoBarra - 10);
+  pantalla.setTextColor(COLOR_BORDE);
+  pantalla.setTextSize(2);
+  pantalla.print("Estas Atragantao");
   while(banana != 3)
   {
     Ttranscurrido = millis() - tutus;
@@ -106,12 +109,13 @@ bool InQuickEvent()
       {
         Poso = anchoBarra;
       }
-      if (Poso > Experofafoiso - 3 && Poso < Experofafoiso + 3)
+      if (Poso > Experofafoiso - 10 && Poso < Experofafoiso + 10)
       {
         banana++;
         Experofafoiso = random(50, anchoBarra - 50);
         dibujarFondoQuickEvent(Experofafoiso, 30, anchoBarra, altoBarra);
       }
+      delay(30);
     }
     
     if (Poso < 0)
@@ -129,17 +133,20 @@ bool InQuickEvent()
     }
     
     pantalla.setCursor(xBarra, yBarra - 20);
-    pantalla.setTextSize(1.5);
-    pantalla.print(String("T:") + (Ttranscurrido / 1000));
-    
-    if (Ttranscurrido > 8000) 
+    pantalla.setTextSize(2.5);
+    pantalla.setTextColor(COLOR_SELECCION);
+    pantalla.print(String("T:") + (15 - (Ttranscurrido / 1000)));
+    pantalla.setCursor(xBarra, yBarra - 20);
+    pantalla.setTextSize(2.5);
+    pantalla.setTextColor(NEGRO_GRIS);
+    pantalla.print(String("T:") + (15 - (Ttranscurrido / 1000)));
+    if (Ttranscurrido > 15000) 
     {
-      pantalla.fillRect(xBarra - 5, yBarra - 5, anchoBarra + 10, altoBarra + 15, COLOR_FONDO);
+      pantalla.fillRect(xBarra - 5, yBarra - 50, anchoBarra + 10, altoBarra + 50, COLOR_FONDO);
       return false;
     }
   }
-  
-  pantalla.fillRect(xBarra - 5, yBarra - 5, anchoBarra + 10, altoBarra + 15, COLOR_FONDO);
+  pantalla.fillRect(xBarra - 5, yBarra - 50, anchoBarra + 10, altoBarra + 50, COLOR_FONDO);
   return true;
 }
 bool EXPOQuick()
@@ -207,7 +214,6 @@ bool BtnACT() {
     if (Btnpress) {
       Btnpress = false;
       dibujarCasilla(3, casila == 3, cantidadDeLanas);
-      graficarVida(Sucri, 20, 180, 0x0000);
       return true;
     }
     return false;
@@ -258,12 +264,20 @@ void juegito() {
     digitalWrite(TiraLed.y, HIGH);
     if ((Sucri + 3) > 20) {
       Sucri = ceil(((Sucri + 3)-20) *0.3) + 20;
-      dibujarDan(true, 1, true);
+      dibujarDan(true, 2, true);
     } else {
-      Sucri += 3;
-      dibujarDan(true, 3, true);
+      Sucri += 4;
+      dibujarDan(true, 4, true);
     }
-    vidaDelMalditoYHorribleWarden -= 6;
+    int papa = random(0, 15);
+    if (papa == 7)
+    {
+      bool das;
+      das = InQuickEvent();
+      Sucri -= das ? 0 : 5;
+      dibujarDan(true, !(das) * 5, false);
+    }
+    vidaDelMalditoYHorribleWarden -= 12;
     accionesDisp--;
     Serial.println(String("V") + Sucri);
     Serial.println(String("W") + vidaDelMalditoYHorribleWarden);
