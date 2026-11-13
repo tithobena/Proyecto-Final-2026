@@ -72,6 +72,7 @@ bool pantallaTocada() {
   pinMode(XM, OUTPUT);
   pinMode(YP, OUTPUT);
   if (t.z != 0) {
+    Serial.println(String("yumitocado") + t.z);
     return true;
   } else {
     return false;
@@ -336,7 +337,7 @@ void graficarQuickEvent(unsigned long Ttranscurrido, int ExpClkTm, int altura) {
   const int altoBarra = 80;
   int xBarra = (480 - anchoBarra) / 2; // xBarra = 84
   int yBarra = (320 - altoBarra) / 2 - altura;
-
+  Serial.println("se batcitobp el brokcEvent");
   pantalla.fillRect(xBarra, yBarra, anchoBarra, altoBarra, NEGRO_GRIS);
 
   int xProgreso = xBarra + Ttranscurrido;
@@ -352,14 +353,10 @@ void graficarQuickEvent(unsigned long Ttranscurrido, int ExpClkTm, int altura) {
 }
 
 // Dibuja la barra y la zona objetivo (una sola vez al empezar)
-void dibujarFondoQuickEvent(int ExpClkTm, int altura) {
-  const int anchoBarra = 312;
-  const int altoBarra = 80;
+void dibujarFondoQuickEvent(int ExpClkTm, int altura, int anchoBarra = 312, int altoBarra = 80) {
   int xBarra = (480 - anchoBarra) / 2;
   int yBarra = (320 - altoBarra) / 2 - altura;
-
   pantalla.fillRect(xBarra, yBarra, anchoBarra, altoBarra, NEGRO_GRIS);
-
   int anchoZonaObjetivo = 30;
   int xZonaObjetivo = xBarra + (ExpClkTm - anchoZonaObjetivo / 2);
   pantalla.fillRect(xZonaObjetivo, yBarra, anchoZonaObjetivo, altoBarra, LIMA_LIMOSO);
@@ -475,4 +472,37 @@ void dibujarDerrota() {
   pantalla.setCursor(205, 174);
   pantalla.print("Title Screen");
   // [END lopaka generated]
+}
+void dibujarDan(bool Warden, int dinamico, bool PlagueInc)
+{
+  const float tamal = 7;
+  int yi = Warden? 100 : 30;
+  uint16_t Colori = PlagueInc? 0x07E0 : 0xF800; 
+  for (float i = 0; i < 40; i++)
+  {
+    uint16_t Colorifinal = iterpolacio(Colori, COLOR_FONDO, i / 40);
+    pantalla.setCursor(200, (float)yi + (i * 0.6f));
+    pantalla.setTextColor(Colorifinal);
+    pantalla.setTextSize(tamal);
+    pantalla.print(String(dinamico));
+    pantalla.setCursor(200, (float)yi + (i * 0.6f));
+    pantalla.setTextColor(Colorifinal);
+    pantalla.setTextSize(tamal);
+    pantalla.setTextColor(COLOR_FONDO);
+    pantalla.print(String(dinamico));
+  }
+}
+uint16_t iterpolacio(uint16_t origi, uint16_t dest, float t) {
+    if (t < 0.0f) t = 0.0f;
+    if (t > 1.0f) t = 1.0f;
+    uint8_t r1 = (origi >> 11) & 0x1F;
+    uint8_t g1 = (origi >> 5) & 0x3F;
+    uint8_t b1 = origi & 0x1F;
+    uint8_t r2 = (dest >> 11) & 0x1F;
+    uint8_t g2 = (dest >> 5) & 0x3F;
+    uint8_t b2 = dest & 0x1F;
+    uint8_t r = r1 + (uint8_t)((r2 - r1) * t);
+    uint8_t g = g1 + (uint8_t)((g2 - g1) * t);
+    uint8_t b = b1 + (uint8_t)((b2 - b1) * t);
+    return (r << 11) | (g << 5) | b;
 }

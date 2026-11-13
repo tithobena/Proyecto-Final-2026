@@ -20,6 +20,10 @@ porfa, no falles                       LCDtouch, Adafruit ILI9341, servo de mich
 #include <TouchScreen.h>
 #include <Servo.h>
 #include <math.h>
+#include "teclado.h"
+#include "ListLib.h"
+
+Teclado SoyVictimaUnMoutruoMortal;
 
 //=======================================
 //  Modulos propios
@@ -47,7 +51,7 @@ const byte BTN1    = 24;
 const byte Ssignal = 44; // Senal del servo (BerlinSans)
 
 // Tira LED: x, y, z son los 3 pines de salida (no una coordenada real)
-const TSPoint TiraLed = TSPoint(40, 41, 43);
+const TSPoint TiraLed = TSPoint(19, 20, 21);                                                    
 
 //=======================================
 //  Variables de estado del juego
@@ -59,6 +63,9 @@ int casila = 0;
 bool UD = false;
 bool empiezalobueno = true;
 bool Remember24 = false; // Referencia a End Of Beginning - Djo
+int turn0 = 0;
+List<int> ListiPuntos;
+List<String> ListiNombres;
 
 //=======================================
 //  Objetos de hardware
@@ -86,7 +93,6 @@ bool ULTRASonicJbCOMPANY() {
     return false;
   }
 }
-
 //=======================================
 //  Setup
 //=======================================
@@ -117,6 +123,7 @@ void loop() {
       if (pantallaTocada()) {
         reiniciarJuego();
         estado = JUGANDO;
+        Serial.println("inciojuego");
         dibujarJuego();
         delay(300);
       }
@@ -131,6 +138,7 @@ void loop() {
       if (pantallaTocada()) {
         estado = MENU_INICIO;
         dibujarMenuInicio();
+        Serial.println("muenus Inico");
         delay(300);
       }
       break;
@@ -141,7 +149,7 @@ void loop() {
 //  Turno de juego
 //=======================================
 void jugar() {
-  graficarBarraBossWarden(vidaDelMalditoYHorribleWarden, 250);
+  graficarBarraBossWarden(vidaDelMalditoYHorribleWarden, 400);
   leerToque(cantidadDeLanas);
 
   // Barras de vida del jugador (20 puntos por barra, redondeo hacia arriba)
@@ -154,20 +162,45 @@ void jugar() {
     int yPos = 180 - (C * 20);
     graficarVida(vidaEnBarra, 20, yPos, 0x000);
   }
-
+  vidaDelMalditoYHorribleWarden = vidaDelMalditoYHorribleWarden < 0? 0 : vidaDelMalditoYHorribleWarden;
+  int temipuntos = ((400 / vidaDelMalditoYHorribleWarden) -1) + 100;
+  int puntos;
+  if (temipuntos != puntos)
+  {
+    pantalla.setTextColor(0xBDF7);
+    pantalla.setCursor(402, 61);
+    pantalla.setTextColor(COLOR_FONDO);
+    pantalla.setTextSize(3);
+    pantalla.print(String("P:") + puntos);
+  }
+  puntos = temipuntos;
+  pantalla.setTextColor(0xBDF7);
+  pantalla.setCursor(402, 61);
+  pantalla.setTextSize(2);
+  pantalla.print(String("P:") + puntos);
   // Fin de partida
   if (Sucri <= 0) {
     Serial.println("V0");
     estado = DERROTA;
     dibujarDerrota();
+    delay(2000);
+    String nombresincocinar = SoyVictimaUnMoutruoMortal.pedirTexto("", 15);
+    ListiNombres.Add(nombresincocinar);
+    ListiPuntos.Add(puntos);
     delay(300);
+    DibujarLilVro();
     return;
   }
   if (vidaDelMalditoYHorribleWarden <= 0) {
     Serial.println("ganastebro");
     estado = VICTORIA;
     dibujarVictoria();
+    delay(2000);
+    String nombresincocinar = SoyVictimaUnMoutruoMortal.pedirTexto("", 15);
+    ListiNombres.Add(nombresincocinar);
+    ListiPuntos.Add(puntos);
     delay(300);
+    DibujarLilVro();
     return;
   }
 
@@ -175,12 +208,15 @@ void jugar() {
     if (accionesDisp != 0) {
       juegito();
     } else if (empiezalobueno) { // Turno del Warden
+      turn0++;
       turnoMan(false);
       digitalWrite(TiraLed.y, 1);
       digitalWrite(TiraLed.z, 1);
       BerlinSans.write(95);
       empiezalobueno = false;
-      Sucri -= QuickEvent() ? 0 : 9;
+      bool javio = QuickEvent();
+      Sucri -= javio? 0 : 9;
+      dibujarDan(true, !(javio) * 9, false);
       Serial.println(String("V") + Sucri);
       accionesDisp = 1;
       empiezalobueno = true;
@@ -189,4 +225,33 @@ void jugar() {
       LanaUsable = true;
     }
   }
+}
+void DibujarLilVro()
+{
+  pantalla.fillScreen(COLOR_CASILLA);
+  pantalla.fillRect(67, -13, 348, 373, 0x10C4);
+  pantalla.fillRect(72, 20, 339, 32, 0x4208);
+  pantalla.setTextColor(0xFFFF);
+  pantalla.setTextSize(2);
+  pantalla.setTextWrap(false);
+  pantalla.setCursor(84, 31);
+  pantalla.print("Nombres");
+  pantalla.setTextSize(3);
+  pantalla.setCursor(277, 25);
+  pantalla.print("Puntos");
+  int fifas = min((int)ListiNombres.Count(), (int)ListiPuntos.Count());
+  if (fifas > 10) 
+    fifas = 10;
+
+  for (int i = 0; i < fifas; i++)
+  {
+    int y = 58 + i * 26;
+    pantalla.fillRect(72, y, 339, 24, 0x4208);
+    pantalla.setTextSize(2);
+    pantalla.setCursor(84, y + 4);
+    pantalla.print(ListiNombres[i]);
+    pantalla.setCursor(277, y + 4);
+    pantalla.print(ListiPuntos[i]);
+  }
+  pantalla.fillRect(238, -6, 5, 336, 0xBDF7); 
 }

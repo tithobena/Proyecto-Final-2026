@@ -29,6 +29,7 @@
 #include <Servo.h>
 #include <TouchScreen.h>
 
+
 //=====================================================================
 // [2] HOTBAR (medidas de la barra de casillas)
 //=====================================================================
@@ -87,7 +88,7 @@ void graficarBarraBossWarden(int vidaActual, int vidaMaxima);
 
 // 5.4 QuickEvent
 void graficarQuickEvent(unsigned long Ttranscurrido, int ExpClkTm, int altura);
-void dibujarFondoQuickEvent(int ExpClkTm, int altura);
+void dibujarFondoQuickEvent(int ExpClkTm, int altura, int anchoBarra = 312, int altoBarra = 80);
 void actualizarCursorQuickEvent(unsigned long tAnt, unsigned long tNuevo, int ExpClkTm, int altura);
 
 // 5.5 Pantallas completas
@@ -95,10 +96,11 @@ void dibujarJuego();
 void dibujarMenuInicio();
 void dibujarVictoria();
 void dibujarDerrota();
+void dibujarDan(bool Warden, int dinamico, bool PlagueInc);
 
 // 5.6 Efectos
 void truquilloSonic(int x, int y, int w, int h, uint16_t color);
-
+uint16_t iterpolacio(uint16_t origi, uint16_t dest, float t);
 //=====================================================================
 // [6] BITMAPS
 //=====================================================================
